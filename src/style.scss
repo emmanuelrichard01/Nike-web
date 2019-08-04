@@ -1,0 +1,319 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body {
+    font-family: 'Lato',
+        sans-serif;
+
+    /*font-family: 'Lacquer',
+    sans-serif;*/
+    .navbar {
+        .items {
+            margin-left: 20em;
+            ul {
+                .nav-item {
+                    margin-right: 1em;
+                    padding: 10px;
+                }
+            }
+        }
+        
+        @media screen and (max-width: 850px) {
+            .navbar-brand {
+                display: none;
+            }
+            .items{
+                margin-left: 0;
+            }
+        }
+
+
+        .navbar-nav {
+            
+
+            .nav-link {
+                color: black;
+                transition: all .2s cubic-bezier(1, 0.27, 0.93, 1.29);
+                padding: 7px;
+            }
+            @media screen and (max-width: 850px){
+                .nav-link{
+                    color: white;
+                }
+            }
+
+            .nav-link:hover {
+                color: white;
+                background: black;
+                border-radius: 15px;
+            }
+            @media screen and (max-width: 850px){
+                .nav-link:hover {
+                    color: black;
+                    background: white;
+                }
+            }
+        }
+
+        .search-box {
+            padding: 0px 10px 10px 10px;
+
+            background: black;
+            color: white;
+            border-radius: 40px;
+            height: 40px;
+
+            .search-txt {
+                border: none;
+                background: none;
+                outline: none;
+                float: left;
+                padding: 0;
+                color: white;
+                font-size: 16px;
+                transition: 0.45s;
+                line-height: 40px;
+                width: 0;
+            }
+            @media screen and (max-width: 850px){
+                .search-txt{
+                    color: black;
+                }
+            }
+
+            .search-btn {
+                color: white;
+                float: right;
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                background: black;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            @media screen and (max-width: 850px){
+                .search-btn{
+                    color: black;
+                    background: white;
+                }
+            }
+        }
+            @media screen and (max-width: 850px){
+                .search-box{
+                    background: white;
+                    color: black;
+                }
+            }
+        
+        
+
+        .search-box:hover>.search-txt {
+            width: 170px;
+            padding: 0 6px;
+        }
+
+        .search-box:hover>.search-btn {
+            background: white;
+            color: black;
+        }
+    }
+
+    .bg1 {
+        background: black;
+        height: 100%;
+        position: absolute;
+        right: 70%;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: -2;
+    }
+
+    @media screen and (max-width: 850px) {
+        .bg1 {
+            display: none;
+        }
+
+    }
+
+    .bg2 {
+        background: rgb(228, 222, 222);
+        height: 100%;
+        position: absolute;
+        left: 30%;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -2;
+    }
+
+    @media screen and (max-width: 850px) {
+        .bg2 {
+            display: none;
+        }
+    }
+
+    span {
+        position: absolute;
+        height: 350px;
+        width: 350px;
+        border-radius: 50%;
+        background: linear-gradient(205deg, gold, goldenrod, rgb(36, 35, 35));
+        z-index: 2;
+        left: 17%;
+        top: 25%;
+        right: 80%;
+
+        img {
+            transform: rotate(30deg);
+            margin-top: 2em;
+        }
+    }
+
+    @media screen and (max-width: 850px) {
+        span {
+            display: none;
+
+            img {
+                display: none;
+            }
+        }
+    }
+
+    .container {
+        padding: 20px;
+        width: 400px;
+        margin-top: 3em;
+
+        h4 {
+            font-size: 20px;
+            font-weight: lighter;
+            font-family: 'Lacquer',
+                sans-serif;
+
+        }
+
+        h1 {
+            font-size: 5em;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 20px;
+            font-family: 'El Messiri',
+                sans-serif;
+            text-align: justify;
+        }
+
+        button {
+            background: none;
+            border-radius: 15px;
+            border: 1px solid black;
+            height: 40px;
+
+            a {
+                font-weight: bold;
+                text-decoration: none;
+                color: black;
+
+                &:hover {
+                    color: white;
+                }
+            }
+        }
+
+        button:hover {
+            border: none;
+            background: black;
+            color: white;
+        }
+        @media screen and (max-width: 850px){
+            button {
+                background: none;
+                border-radius: 15px;
+                border: 1px solid white;
+                height: 40px;
+
+                a {
+                    font-weight: bold;
+                    text-decoration: none;
+                    color: white;
+
+                    &:hover {
+                        color: black;
+                    }
+                }
+            }
+            button:hover {
+                border: none;
+                background: white;
+                color: black;
+            }
+        }
+    }
+
+    .social {
+        a {
+            text-decoration: none;
+            margin-left: 1em;
+            font-size: 1.3em;
+            color: white;
+        }
+    }
+
+    @media screen and (max-width: 850px) {
+        .navbar-toggler{
+            background: white;
+        }
+        .container {
+            padding: 10px;
+            text-align: left;
+            color: white;
+            p {
+                line-height: 20px;
+                font-family: 'lato',
+                    sans-serif;
+                text-align: left;
+            }
+        }
+         p {
+             line-height: 20px;
+             font-family: 'El Messiri',
+                 sans-serif;
+             text-align: left;
+         }
+        button{
+            display: block;
+            align-items: center;
+        }
+
+        .social {
+            color: black;
+        }
+
+    }
+
+    
+
+
+}
+@media screen and (max-width: 850px) {
+    body {
+        background-image: url("/img/bowling-shoes-.jpg");
+    }
+
+    .row {
+        .oo {
+            display: none;
+        }
+    }
+    .navbar-toggler-icon{
+        color: white;
+    }
+
+}

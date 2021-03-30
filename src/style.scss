@@ -14,10 +14,7 @@ body {
     .navbar {
         .items {
             margin-left: 20em;
-<<<<<<< HEAD
 
-=======
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
             ul {
                 .nav-item {
                     margin-right: 1em;
@@ -25,46 +22,28 @@ body {
                 }
             }
         }
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
         @media screen and (max-width: 850px) {
             .navbar-brand {
                 display: none;
             }
-<<<<<<< HEAD
 
             .items {
-=======
-            .items{
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
                 margin-left: 0;
             }
         }
 
 
         .navbar-nav {
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
 
             .nav-link {
                 color: black;
                 transition: all .2s cubic-bezier(1, 0.27, 0.93, 1.29);
                 padding: 7px;
             }
-<<<<<<< HEAD
 
             @media screen and (max-width: 850px) {
                 .nav-link {
-=======
-            @media screen and (max-width: 850px){
-                .nav-link{
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
                     color: white;
                 }
             }
@@ -74,12 +53,8 @@ body {
                 background: black;
                 border-radius: 15px;
             }
-<<<<<<< HEAD
 
             @media screen and (max-width: 850px) {
-=======
-            @media screen and (max-width: 850px){
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
                 .nav-link:hover {
                     color: black;
                     background: white;
@@ -107,14 +82,9 @@ body {
                 line-height: 40px;
                 width: 0;
             }
-<<<<<<< HEAD
 
             @media screen and (max-width: 850px) {
                 .search-txt {
-=======
-            @media screen and (max-width: 850px){
-                .search-txt{
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
                     color: black;
                 }
             }
@@ -130,20 +100,14 @@ body {
                 justify-content: center;
                 align-items: center;
             }
-<<<<<<< HEAD
 
             @media screen and (max-width: 850px) {
                 .search-btn {
-=======
-            @media screen and (max-width: 850px){
-                .search-btn{
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
                     color: black;
                     background: white;
                 }
             }
         }
-<<<<<<< HEAD
 
         @media screen and (max-width: 850px) {
             .search-box {
@@ -153,16 +117,6 @@ body {
         }
 
 
-=======
-            @media screen and (max-width: 850px){
-                .search-box{
-                    background: white;
-                    color: black;
-                }
-            }
-        
-        
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
 
         .search-box:hover>.search-txt {
             width: 170px;
@@ -217,11 +171,7 @@ body {
         border-radius: 50%;
         background: linear-gradient(205deg, gold, goldenrod, rgb(36, 35, 35));
         z-index: 2;
-<<<<<<< HEAD
         left: 33%;
-=======
-        left: 17%;
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
         top: 25%;
         right: 80%;
 
@@ -288,12 +238,8 @@ body {
             background: black;
             color: white;
         }
-<<<<<<< HEAD
 
         @media screen and (max-width: 850px) {
-=======
-        @media screen and (max-width: 850px){
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
             button {
                 background: none;
                 border-radius: 15px;
@@ -310,10 +256,7 @@ body {
                     }
                 }
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
             button:hover {
                 border: none;
                 background: white;
@@ -332,24 +275,15 @@ body {
     }
 
     @media screen and (max-width: 850px) {
-<<<<<<< HEAD
         .navbar-toggler {
             background: white;
         }
 
-=======
-        .navbar-toggler{
-            background: white;
-        }
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
         .container {
             padding: 10px;
             text-align: left;
             color: white;
-<<<<<<< HEAD
 
-=======
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
             p {
                 line-height: 20px;
                 font-family: 'lato',
@@ -357,7 +291,6 @@ body {
                 text-align: left;
             }
         }
-<<<<<<< HEAD
 
         p {
             line-height: 20px;
@@ -367,15 +300,6 @@ body {
         }
 
         button {
-=======
-         p {
-             line-height: 20px;
-             font-family: 'El Messiri',
-                 sans-serif;
-             text-align: left;
-         }
-        button{
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
             display: block;
             align-items: center;
         }
@@ -386,18 +310,11 @@ body {
 
     }
 
-<<<<<<< HEAD
 
 
 
 }
 
-=======
-    
-
-
-}
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
 @media screen and (max-width: 850px) {
     body {
         background-image: url("/img/bowling-shoes-.jpg");
@@ -408,12 +325,8 @@ body {
             display: none;
         }
     }
-<<<<<<< HEAD
 
     .navbar-toggler-icon {
-=======
-    .navbar-toggler-icon{
->>>>>>> fa74433b4d39e4842fee821e0af3688291897257
         color: white;
     }
 

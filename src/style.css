@@ -6,8 +6,13 @@
 }
 
 body {
+<<<<<<< HEAD
   font-family: 'Lato', sans-serif;
   /*font-family: 'Lacquer',
+=======
+  font-family: 'Lato', sans-serif;
+  /*font-family: 'Lacquer',
+>>>>>>> fa74433b4d39e4842fee821e0af3688291897257
     sans-serif;*/
 }
 
@@ -166,7 +171,11 @@ body span {
   border-radius: 50%;
   background: linear-gradient(205deg, gold, goldenrod, #242323);
   z-index: 2;
+<<<<<<< HEAD
   left: 33%;
+=======
+  left: 17%;
+>>>>>>> fa74433b4d39e4842fee821e0af3688291897257
   top: 25%;
   right: 80%;
 }
@@ -195,7 +204,11 @@ body .container {
 body .container h4 {
   font-size: 20px;
   font-weight: lighter;
+<<<<<<< HEAD
   font-family: 'Lacquer', sans-serif;
+=======
+  font-family: 'Lacquer', sans-serif;
+>>>>>>> fa74433b4d39e4842fee821e0af3688291897257
 }
 
 body .container h1 {
@@ -205,7 +218,11 @@ body .container h1 {
 
 body .container p {
   line-height: 20px;
+<<<<<<< HEAD
   font-family: 'El Messiri', sans-serif;
+=======
+  font-family: 'El Messiri', sans-serif;
+>>>>>>> fa74433b4d39e4842fee821e0af3688291897257
   text-align: justify;
 }
 
@@ -272,12 +289,20 @@ body .social a {
   }
   body .container p {
     line-height: 20px;
+<<<<<<< HEAD
     font-family: 'lato', sans-serif;
+=======
+    font-family: 'lato', sans-serif;
+>>>>>>> fa74433b4d39e4842fee821e0af3688291897257
     text-align: left;
   }
   body p {
     line-height: 20px;
+<<<<<<< HEAD
     font-family: 'El Messiri', sans-serif;
+=======
+    font-family: 'El Messiri', sans-serif;
+>>>>>>> fa74433b4d39e4842fee821e0af3688291897257
     text-align: left;
   }
   body button {

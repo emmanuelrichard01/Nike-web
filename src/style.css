@@ -115,12 +115,14 @@ body .navbar .search-box .search-btn {
   }
 }
 
-body .navbar .search-box:hover > .search-txt {
+body .navbar .search-box:hover > .search-txt,
+body .navbar .search-box:focus-within > .search-txt {
   width: 170px;
   padding: 0 6px;
 }
 
-body .navbar .search-box:hover > .search-btn {
+body .navbar .search-box:hover > .search-btn,
+body .navbar .search-box:focus-within > .search-btn {
   background: white;
   color: black;
 }

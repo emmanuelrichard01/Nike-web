@@ -1,0 +1,5 @@
+{
+  "extends": "@nike/tsconfig/react-library.json",
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

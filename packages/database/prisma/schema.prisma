@@ -1,0 +1,124 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("user") // "user" | "admin"
+  createdAt DateTime @default(now())
+
+  orders    Order[]
+  cart      Cart?
+  reviews   Review[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String
+  price       Decimal
+  categoryId  String
+
+  category    Category @relation(fields: [categoryId], references: [id])
+  variants    ProductVariant[]
+  reviews     Review[]
+
+  @@index([categoryId])
+}
+
+model ProductVariant {
+  id        String   @id @default(uuid())
+  productId String
+  size      String
+  color     String
+  sku       String   @unique
+  stock     Int
+
+  product   Product  @relation(fields: [productId], references: [id])
+  cartItems CartItem[]
+  orderItems OrderItem[]
+
+  @@index([productId])
+}
+
+model Category {
+  id       String   @id @default(uuid())
+  name     String
+  slug     String   @unique
+  parentId String?
+
+  parent   Category?  @relation("CategoryToCategory", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryToCategory")
+  products Product[]
+}
+
+model Cart {
+  id     String   @id @default(uuid())
+  userId String   @unique
+
+  user   User     @relation(fields: [userId], references: [id])
+  items  CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  variantId String
+  quantity  Int
+
+  cart      Cart           @relation(fields: [cartId], references: [id])
+  variant   ProductVariant @relation(fields: [variantId], references: [id])
+
+  @@index([cartId])
+  @@index([variantId])
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  userId    String
+  status    String   // "pending" | "paid" | "shipped" | "delivered" | "cancelled"
+  total     Decimal
+  createdAt DateTime @default(now())
+
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  variantId String
+  price     Decimal
+  quantity  Int
+
+  order     Order          @relation(fields: [orderId], references: [id])
+  variant   ProductVariant @relation(fields: [variantId], references: [id])
+
+  @@index([orderId])
+  @@index([variantId])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  productId String
+  userId    String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  product   Product @relation(fields: [productId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@index([productId])
+  @@index([userId])
+}

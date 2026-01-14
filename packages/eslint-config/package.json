@@ -1,0 +1,13 @@
+{
+  "name": "@nike/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "eslint-config-next": "^14.0.0",
+    "eslint-config-prettier": "^9.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  }
+}

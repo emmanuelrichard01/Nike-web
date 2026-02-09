@@ -7,6 +7,8 @@ import { Button } from "@nike/ui";
 import { Marquee } from "@/components/home/marquee";
 import { ArrowRight, Star, Zap, Shield } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const newReleasesData = await prisma.product.findMany({
     take: 8,

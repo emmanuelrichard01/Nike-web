@@ -5,6 +5,8 @@ import { prisma } from "@nike/database";
 import Link from "next/link";
 import { LayoutDashboard, Package, ShoppingCart, Users, Settings, LogOut } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 interface AdminLayoutProps {
     children: React.ReactNode;
 }

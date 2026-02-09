@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@nike/ui";
-import { SlidersHorizontal, X } from "lucide-react";
+import { Button, cn } from "@nike/ui";
+import { SlidersHorizontal, X, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface FilterSidebarProps {
@@ -22,20 +22,29 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
         } else {
             params.delete(key);
         }
-        // Reset page on filter change
         params.set("page", "1");
         router.push(`/products?${params.toString()}`, { scroll: false });
     };
 
+    const currentCategory = searchParams.get("category");
+    const currentSort = searchParams.get("sort") || "newest";
+
     const FilterContent = () => (
         <div className="space-y-8">
             {/* Categories */}
-            <div className="space-y-3">
-                <h3 className="font-bold text-lg">Categories</h3>
-                <div className="flex flex-col gap-2">
+            <div>
+                <h3 className="font-black text-sm uppercase tracking-wider text-foreground/40 mb-4">
+                    Categories
+                </h3>
+                <div className="space-y-1">
                     <button
                         onClick={() => updateFilters("category", null)}
-                        className={`text-left text-sm hover:text-foreground transition-colors ${!searchParams.get("category") ? "font-bold text-foreground" : "text-foreground-muted"}`}
+                        className={cn(
+                            "w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all",
+                            !currentCategory
+                                ? "bg-black text-white"
+                                : "hover:bg-black/5"
+                        )}
                     >
                         All Products
                     </button>
@@ -43,35 +52,81 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
                         <button
                             key={cat.id}
                             onClick={() => updateFilters("category", cat.slug)}
-                            className={`text-left text-sm hover:text-foreground transition-colors ${searchParams.get("category") === cat.slug ? "font-bold text-foreground" : "text-foreground-muted"}`}
+                            className={cn(
+                                "w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all flex items-center justify-between",
+                                currentCategory === cat.slug
+                                    ? "bg-black text-white"
+                                    : "hover:bg-black/5"
+                            )}
                         >
-                            {cat.name} <span className="text-xs text-gray-400">({cat._count.products})</span>
+                            <span>{cat.name}</span>
+                            <span className={cn(
+                                "text-xs px-2 py-0.5 rounded-full",
+                                currentCategory === cat.slug
+                                    ? "bg-white/20"
+                                    : "bg-black/5"
+                            )}>
+                                {cat._count.products}
+                            </span>
                         </button>
                     ))}
                 </div>
             </div>
 
-            <div className="w-full h-px bg-border" />
+            <div className="h-px bg-black/5" />
 
             {/* Sort By */}
-            <div className="space-y-3">
-                <h3 className="font-bold text-lg">Sort By</h3>
-                <div className="flex flex-col gap-2">
+            <div>
+                <h3 className="font-black text-sm uppercase tracking-wider text-foreground/40 mb-4">
+                    Sort By
+                </h3>
+                <div className="space-y-1">
                     {[
                         { label: "Newest", value: "newest" },
-                        { label: "Price: Low-High", value: "price_asc" },
-                        { label: "Price: High-Low", value: "price_desc" },
+                        { label: "Price: Low to High", value: "price_asc" },
+                        { label: "Price: High to Low", value: "price_desc" },
                     ].map((option) => (
-                        <div key={option.value} className="flex items-center space-x-2">
-                            <div
-                                onClick={() => updateFilters("sort", option.value)}
-                                className={`w-4 h-4 rounded-full border border-foreground flex items-center justify-center cursor-pointer ${(searchParams.get("sort") || "newest") === option.value ? "bg-foreground" : ""}`}
-                            >
-                                {(searchParams.get("sort") || "newest") === option.value && <div className="w-2 h-2 rounded-full bg-background" />}
-                            </div>
-                            <label onClick={() => updateFilters("sort", option.value)} className="text-sm cursor-pointer select-none">{option.label}</label>
-                        </div>
+                        <button
+                            key={option.value}
+                            onClick={() => updateFilters("sort", option.value)}
+                            className={cn(
+                                "w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all flex items-center justify-between",
+                                currentSort === option.value
+                                    ? "bg-black text-white"
+                                    : "hover:bg-black/5"
+                            )}
+                        >
+                            <span>{option.label}</span>
+                            {currentSort === option.value && (
+                                <Check className="w-4 h-4" />
+                            )}
+                        </button>
                     ))}
+                </div>
+            </div>
+
+            {/* Price Range (Visual placeholder) */}
+            <div>
+                <h3 className="font-black text-sm uppercase tracking-wider text-foreground/40 mb-4">
+                    Price Range
+                </h3>
+                <div className="flex gap-3">
+                    <div className="flex-1">
+                        <label className="text-xs text-foreground/50 mb-1 block">Min</label>
+                        <input
+                            type="text"
+                            placeholder="$0"
+                            className="w-full px-4 py-3 rounded-xl bg-black/5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10"
+                        />
+                    </div>
+                    <div className="flex-1">
+                        <label className="text-xs text-foreground/50 mb-1 block">Max</label>
+                        <input
+                            type="text"
+                            placeholder="$500"
+                            className="w-full px-4 py-3 rounded-xl bg-black/5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,16 +135,10 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
     return (
         <>
             {/* Desktop Sidebar */}
-            <div className="hidden lg:block w-64 flex-shrink-0 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto pr-4 scrollbar-hide">
-                <FilterContent />
-            </div>
-
-            {/* Mobile Trigger */}
-            <div className="lg:hidden mb-6 flex items-center justify-between">
-                <span className="font-bold text-lg">Filters</span>
-                <Button variant="outline" size="sm" onClick={() => setIsOpen(true)} className="flex items-center gap-2">
-                    <SlidersHorizontal className="w-4 h-4" /> Filter
-                </Button>
+            <div className="hidden lg:block w-64 flex-shrink-0">
+                <div className="sticky top-24">
+                    <FilterContent />
+                </div>
             </div>
 
             {/* Mobile Filter Drawer */}
@@ -101,24 +150,39 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsOpen(false)}
-                            className="fixed inset-0 bg-black/50 z-50 lg:hidden"
+                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 lg:hidden"
                         />
                         <motion.div
                             initial={{ x: "100%" }}
                             animate={{ x: 0 }}
                             exit={{ x: "100%" }}
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="fixed inset-y-0 right-0 w-full max-w-xs bg-background shadow-xl z-50 lg:hidden p-6 overflow-y-auto"
+                            className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl z-50 lg:hidden flex flex-col"
                         >
-                            <div className="flex items-center justify-between mb-8">
-                                <h2 className="text-xl font-bold">Filters</h2>
-                                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
+                            {/* Header */}
+                            <div className="flex items-center justify-between p-6 border-b border-black/5">
+                                <h2 className="text-xl font-black">Filters</h2>
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="w-10 h-10 rounded-full hover:bg-black/5 flex items-center justify-center"
+                                >
                                     <X className="w-5 h-5" />
-                                </Button>
+                                </button>
                             </div>
-                            <FilterContent />
-                            <div className="mt-8 pt-6 border-t border-border">
-                                <Button className="w-full" onClick={() => setIsOpen(false)}>Show Results</Button>
+
+                            {/* Content */}
+                            <div className="flex-1 overflow-y-auto p-6">
+                                <FilterContent />
+                            </div>
+
+                            {/* Footer */}
+                            <div className="p-6 border-t border-black/5 bg-white">
+                                <Button
+                                    className="w-full rounded-full h-12 font-bold"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Show Results
+                                </Button>
                             </div>
                         </motion.div>
                     </>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@nike/ui";
-import { ShoppingBag, ChevronUp } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface StickyAddToCartProps {
@@ -19,11 +19,11 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
     useEffect(() => {
         const handleScroll = () => {
             const scrollY = window.scrollY;
-            const threshold = 500;
+            const threshold = 400;
             setIsVisible(scrollY > threshold);
         };
 
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
@@ -40,52 +40,49 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
         <AnimatePresence>
             {isVisible && (
                 <motion.div
-                    initial={{ y: "100%" }}
-                    animate={{ y: 0 }}
-                    exit={{ y: "100%" }}
-                    transition={{ type: "spring", stiffness: 400, damping: 35 }}
-                    className="fixed bottom-0 left-0 right-0 z-50 lg:hidden"
-                    style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+                    initial={{ y: 100, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 100, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-32px)] max-w-md pointer-events-none"
                 >
-                    {/* Glass morphism container */}
-                    <div className="bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-[0_-8px_30px_rgba(0,0,0,0.12)]">
-                        <div className="px-4 py-3">
-                            <div className="flex items-center gap-3">
-                                {/* Product thumbnail */}
-                                <div className="flex-shrink-0 w-14 h-14 bg-gray-100 rounded-lg overflow-hidden">
-                                    {product.image ? (
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-xl text-gray-300">
-                                            👟
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Product info */}
-                                <div className="flex-1 min-w-0">
-                                    <p className="font-bold text-sm text-gray-900 truncate leading-tight">
-                                        {product.name}
-                                    </p>
-                                    <p className="text-sm font-semibold text-gray-600 mt-0.5">
-                                        ${product.price.toFixed(2)}
-                                    </p>
-                                </div>
-
-                                {/* CTA Button */}
-                                <Button
-                                    size="lg"
-                                    onClick={scrollToOptions}
-                                    className="flex-shrink-0 bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
-                                >
-                                    <ShoppingBag className="w-4 h-4 mr-2" />
-                                    Add to Bag
-                                </Button>
+                    <div className="pointer-events-auto">
+                        {/* Glass Bar */}
+                        <div className="glass-dark backdrop-blur-xl rounded-full p-2 shadow-2xl flex items-center gap-3 border border-white/10">
+                            {/* Product thumbnail */}
+                            <div className="flex-shrink-0 w-10 h-10 bg-white/10 rounded-full overflow-hidden">
+                                {product.image ? (
+                                    <img
+                                        src={product.image}
+                                        alt={product.name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-lg">
+                                        👟
+                                    </div>
+                                )}
                             </div>
+
+                            {/* Product info */}
+                            <div className="flex-1 min-w-0 px-1">
+                                <p className="font-bold text-sm text-white truncate leading-tight">
+                                    {product.name}
+                                </p>
+                                <p className="text-xs text-white/70">
+                                    ${product.price.toFixed(2)}
+                                </p>
+                            </div>
+
+                            {/* CTA Button */}
+                            <Button
+                                size="sm"
+                                onClick={scrollToOptions}
+                                className="flex-shrink-0 bg-accent hover:bg-accent/90 text-black rounded-full px-6 h-10 font-bold text-sm transition-all duration-200 active:scale-95 shadow-[0_0_15px_rgba(192,255,0,0.3)]"
+                            >
+                                <ShoppingBag className="w-4 h-4 mr-1.5" />
+                                Add
+                            </Button>
                         </div>
                     </div>
                 </motion.div>

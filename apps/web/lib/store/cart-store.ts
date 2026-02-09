@@ -12,6 +12,7 @@ export interface CartItem {
     color: string;
     quantity: number;
     image?: string;
+    category?: string;
 }
 
 interface CartState {

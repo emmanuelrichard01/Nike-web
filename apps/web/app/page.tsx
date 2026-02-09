@@ -8,17 +8,27 @@ import { Marquee } from "@/components/home/marquee";
 import { ArrowRight, Star, Zap, Shield } from "lucide-react";
 
 export default async function Home() {
-  const newReleases = await prisma.product.findMany({
+  const newReleasesData = await prisma.product.findMany({
     take: 8,
     orderBy: { createdAt: "desc" },
     include: { category: true, variants: true }
   });
 
-  const trending = await prisma.product.findMany({
+  const newReleases = newReleasesData.map(p => ({
+    ...p,
+    price: p.price.toNumber()
+  }));
+
+  const trendingData = await prisma.product.findMany({
     take: 8,
     skip: 0,
     include: { category: true, variants: true }
   });
+
+  const trending = trendingData.map(p => ({
+    ...p,
+    price: p.price.toNumber()
+  }));
 
   return (
     <main className="min-h-screen bg-white">

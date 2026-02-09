@@ -39,7 +39,7 @@ function ModernProductCard({
     const [isHovered, setIsHovered] = useState(false);
 
     const colors = product.variants
-        ? [...new Set(product.variants.map(v => v.color))]
+        ? Array.from(new Set(product.variants.map(v => v.color)))
         : [];
 
     const hasValidImage = product.images && product.images.length > 0 && !imageError;

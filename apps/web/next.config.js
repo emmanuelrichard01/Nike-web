@@ -45,7 +45,7 @@ const nextConfig = {
       bodySizeLimit: '2mb',
     },
     // Optimize CSS
-    optimizeCss: true,
+    optimizeCss: false,
   },
 
   // Production logging

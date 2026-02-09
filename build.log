@@ -1,0 +1,131 @@
+
+> nike-store-monorepo@0.0.0 build
+> turbo run build
+
+• turbo 2.7.4
+• Packages in scope: @nike/database, @nike/eslint-config, @nike/tsconfig, @nike/ui, web
+• Running build in 5 packages
+• Remote caching disabled
+@nike/database:generate: cache bypass, force executing f28e33c7a82a027e
+@nike/database:generate: 
+@nike/database:generate: > @nike/database@0.0.1 generate
+@nike/database:generate: > prisma generate
+@nike/database:generate: 
+@nike/database:generate: Environment variables loaded from .env
+@nike/database:generate: Prisma schema loaded from prisma\schema.prisma
+@nike/database:generate: 
+@nike/database:generate: ✔ Generated Prisma Client (v5.22.0) to .\..\..\node_modules\@prisma\client in 157ms
+@nike/database:generate: 
+@nike/database:generate: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@nike/database:generate: 
+@nike/database:generate: Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+@nike/database:generate: 
+web:build: cache miss, executing 097b862e4446ed86
+web:build: 
+web:build: > web@0.0.1 build
+web:build: > next build
+web:build: 
+web:build:   ▲ Next.js 14.2.35
+web:build:   - Environments: .env
+web:build:   - Experiments (use with caution):
+web:build:     · optimizeCss
+web:build: 
+web:build:    Creating an optimized production build ...
+web:build:  ✓ Compiled successfully
+web:build:    Linting and checking validity of types ...
+web:build:    Collecting page data ...
+web:build:    Generating static pages (0/23) ...
+web:build: Failed to fetch products: B [Error]: Dynamic server usage: Route /api/products couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+web:build:     at V (C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+web:build:     at Object.get (C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+web:build:     at u (C:\Users\richa\OneDrive\Documents\Nike-web\apps\web\.next\server\app\api\products\route.js:1:601)
+web:build:     at C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+web:build:     at C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+web:build:     at NoopContextManager.with (C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+web:build:     at ContextAPI.with (C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+web:build:     at NoopTracer.startActiveSpan (C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+web:build:     at ProxyTracer.startActiveSpan (C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854)
+web:build:     at C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\lib\trace\tracer.js:122:103 {
+web:build:   description: "Route /api/products couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+web:build:   digest: 'DYNAMIC_SERVER_USAGE'
+web:build: }
+web:build: (node:18672) Warning: `--localstorage-file` was provided without a valid path
+web:build: (Use `node --trace-warnings ...` to show where the warning was created)
+web:build: (node:21892) Warning: `--localstorage-file` was provided without a valid path
+web:build: (Use `node --trace-warnings ...` to show where the warning was created)
+web:build:    Generating static pages (5/23) 
+web:build: (node:18576) Warning: `--localstorage-file` was provided without a valid path
+web:build: (Use `node --trace-warnings ...` to show where the warning was created)
+web:build: (node:23412) Warning: `--localstorage-file` was provided without a valid path
+web:build: (Use `node --trace-warnings ...` to show where the warning was created)
+web:build: (node:17184) Warning: `--localstorage-file` was provided without a valid path
+web:build: (Use `node --trace-warnings ...` to show where the warning was created)
+web:build: (node:18512) Warning: `--localstorage-file` was provided without a valid path
+web:build: (Use `node --trace-warnings ...` to show where the warning was created)
+web:build: 
+web:build: Error occurred prerendering page "/500". Read more: https://nextjs.org/docs/messages/prerender-error
+web:build: 
+web:build: Error: Cannot find module 'critters'
+web:build: Require stack:
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\next-server\pages.runtime.prod.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\apps\web\.next\server\pages\_document.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\require.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\load-components.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\build\utils.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\build\worker.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\jest-worker\processChild.js
+web:build:     at Module.<anonymous> (node:internal/modules/cjs/loader:1420:15)
+web:build:     at C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\require-hook.js:55:36
+web:build:     at defaultResolveImpl (node:internal/modules/cjs/loader:1058:19)
+web:build:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1063:22)
+web:build:     at Module._load (node:internal/modules/cjs/loader:1226:37)
+web:build:     at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+web:build:     at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+web:build:     at Module.<anonymous> (node:internal/modules/cjs/loader:1503:12)
+web:build:     at mod.require (C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\require-hook.js:65:28)
+web:build:     at require (node:internal/modules/helpers:152:16)
+web:build:    Generating static pages (11/23) 
+web:build: 
+web:build: Error occurred prerendering page "/404". Read more: https://nextjs.org/docs/messages/prerender-error
+web:build: 
+web:build: Error: Cannot find module 'critters'
+web:build: Require stack:
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\next-server\pages.runtime.prod.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\apps\web\.next\server\pages\_document.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\require.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\load-components.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\build\utils.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\build\worker.js
+web:build: - C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\compiled\jest-worker\processChild.js
+web:build:     at Module.<anonymous> (node:internal/modules/cjs/loader:1420:15)
+web:build:     at C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\require-hook.js:55:36
+web:build:     at defaultResolveImpl (node:internal/modules/cjs/loader:1058:19)
+web:build:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1063:22)
+web:build:     at Module._load (node:internal/modules/cjs/loader:1226:37)
+web:build:     at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+web:build:     at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+web:build:     at Module.<anonymous> (node:internal/modules/cjs/loader:1503:12)
+web:build:     at mod.require (C:\Users\richa\OneDrive\Documents\Nike-web\node_modules\next\dist\server\require-hook.js:65:28)
+web:build:     at require (node:internal/modules/helpers:152:16)
+web:build:    Generating static pages (17/23) 
+web:build:  ✓ Generating static pages (23/23)
+web:build: 
+web:build: > Export encountered errors on following paths:
+web:build: 	/_error: /404
+web:build: 	/_error: /500
+web:build: npm error Lifecycle script `build` failed with error:
+web:build: npm error code 1
+web:build: npm error path C:\Users\richa\OneDrive\Documents\Nike-web\apps\web
+web:build: npm error workspace web@0.0.1
+web:build: npm error location C:\Users\richa\OneDrive\Documents\Nike-web\apps\web
+web:build: npm error command failed
+web:build: npm error command C:\WINDOWS\system32\cmd.exe /d /s /c next build
+web:build: ERROR: command finished with error: command (C:\Users\richa\OneDrive\Documents\Nike-web\apps\web) C:\Program Files\nodejs\npm.cmd run build exited (1)
+web#build: command (C:\Users\richa\OneDrive\Documents\Nike-web\apps\web) C:\Program Files\nodejs\npm.cmd run build exited (1)
+
+ Tasks:    1 successful, 2 total
+Cached:    0 cached, 2 total
+  Time:    38.942s 
+Failed:    web#build
+
+ ERROR  run failed: command  exited (1)

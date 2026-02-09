@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@nike/ui";
-import { CheckCircle, Package, Truck, Mail, ArrowRight, Clock } from "lucide-react";
+import { CheckCircle, Package, Truck, Mail, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
     const [orderNumber, setOrderNumber] = useState<string | null>(null);
@@ -219,5 +218,13 @@ function TimelineStep({
                 <p className="text-sm text-[#707072]">{description}</p>
             </div>
         </div>
+    );
+}
+
+export default function CheckoutSuccessPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><p>Loading order details...</p></div>}>
+            <CheckoutSuccessContent />
+        </Suspense>
     );
 }

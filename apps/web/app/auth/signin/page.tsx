@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { Button, Input, Card, CardHeader, CardTitle, CardDescription, CardConten
 import { Mail, Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-export default function SignInPage() {
+function SignInContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -173,5 +173,17 @@ export default function SignInPage() {
                 </CardFooter>
             </Card>
         </div>
+    );
+}
+
+export default function SignInPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-[80vh] flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-foreground-muted" />
+            </div>
+        }>
+            <SignInContent />
+        </Suspense>
     );
 }

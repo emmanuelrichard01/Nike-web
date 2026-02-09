@@ -4,18 +4,33 @@
   "private": true,
   "packageManager": "npm@10.9.0",
   "scripts": {
-    "build": "turbo run build",
     "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "lint:fix": "turbo run lint -- --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "db:generate": "turbo run generate --filter=@nike/database",
+    "db:push": "npm run db:push --workspace=@nike/database",
+    "db:seed": "npm run db:seed --workspace=@nike/database",
+    "db:studio": "npm run db:studio --workspace=@nike/database",
+    "storybook": "turbo run storybook",
+    "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "prettier": "^3.0.0",
-    "turbo": "latest",
-    "typescript": "^5.0.0"
+    "prettier": "^3.2.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.3.0"
   },
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

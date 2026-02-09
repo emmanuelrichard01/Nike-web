@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { AuthProvider } from "@/components/providers/auth-provider";
+import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Nike Store",
-  description: "Official Nike Store",
+  title: {
+    default: "Nike Store | Just Do It",
+    template: "%s | Nike Store",
+  },
+  description:
+    "Shop the latest Nike shoes, apparel, and gear. Free shipping on orders over $100.",
+  keywords: ["Nike", "shoes", "sneakers", "running", "basketball", "training"],
 };
 
 export default function RootLayout({
@@ -15,8 +24,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans`}>
+        <AuthProvider>
+          <Header />
+          <main className="min-h-screen pt-16">{children}</main>
+          <Footer />
+          <Toaster position="bottom-right" richColors />
+        </AuthProvider>
+      </body>
     </html>
   );
 }
+

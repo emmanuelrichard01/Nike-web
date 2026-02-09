@@ -2,26 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    /* Nike Brand Design Tokens - 2026 Refresh */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+    --muted: 0 0% 55%; /* Slightly lighter for better contrast */
+    --accent: 76 100% 50%; /* Volt */
+    --border: 0 0% 90%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 100%;
+    --muted: 0 0% 64%;
+    --border: 0 0% 20%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-accent selection:text-accent-foreground;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1,
+      'ss01' 1; /* Stylistic set for modern look */
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  /* Nike Button Styles - Kinetic & Pill */
+  .btn-nike {
+    @apply inline-flex items-center justify-center rounded-nike px-8 py-4 
+           bg-primary text-primary-foreground font-bold tracking-tight text-lg
+           transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]
+           hover:bg-primary/90 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg
+           active:scale-95 active:translate-y-0
+           disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-nike-outline {
+    @apply btn-nike bg-transparent border-2 border-primary text-foreground
+           hover:bg-primary hover:text-primary-foreground hover:border-primary;
+  }
+
+  .btn-nike-accent {
+    @apply btn-nike bg-accent text-accent-foreground
+           hover:bg-accent-hover hover:shadow-glow;
+  }
+
+  /* Soft Brutalist Cards */
+  .product-card {
+    @apply bg-background-secondary rounded-card p-0 overflow-hidden
+           transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]
+           hover:-translate-y-2 hover:shadow-nike-hover;
+  }
+
+  /* Container */
+  .container-nike {
+    @apply max-w-[1440px] mx-auto px-6 md:px-12; /* Wider for 2026 feel */
+  }
+
+  /* Horizontal Scroll Snap */
+  .snap-x-mandatory {
+    @apply snap-x snap-mandatory overflow-x-auto pb-4;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .snap-x-mandatory::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }

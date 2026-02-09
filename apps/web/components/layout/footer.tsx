@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+import { Facebook, Twitter, Instagram, Youtube, MapPin } from "lucide-react";
 
 const footerLinks = {
     products: [
@@ -25,47 +25,56 @@ const footerLinks = {
 };
 
 const socialLinks = [
-    { name: "Facebook", href: "#", icon: Facebook },
     { name: "Twitter", href: "#", icon: Twitter },
+    { name: "Facebook", href: "#", icon: Facebook },
     { name: "Instagram", href: "#", icon: Instagram },
     { name: "YouTube", href: "#", icon: Youtube },
 ];
 
 export function Footer() {
     return (
-        <footer className="bg-primary text-primary-foreground">
-            <div className="container-nike py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {/* Products */}
-                    <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">
-                            Products
-                        </h3>
-                        <ul className="space-y-2">
-                            {footerLinks.products.map((link) => (
-                                <li key={link.name}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                                    >
-                                        {link.name}
+        <footer className="bg-[#111111] text-white overflow-hidden">
+            <div className="container-nike pt-16 pb-8">
+                {/* Main Footer Content */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+                    {/* Brand / Links */}
+                    <div className="space-y-8">
+                        <div>
+                            <h3 className="text-sm font-bold font-display uppercase tracking-wider mb-4 text-white">
+                                Find a Store
+                            </h3>
+                            <ul className="space-y-3">
+                                <li>
+                                    <Link href="/stores" className="text-sm font-medium text-white hover:text-white/70 transition-colors flex items-center gap-2">
+                                        <MapPin className="w-4 h-4" />
+                                        Find a Location
                                     </Link>
                                 </li>
-                            ))}
-                        </ul>
+                                <li>
+                                    <Link href="/join" className="text-sm font-medium text-white hover:text-white/70 transition-colors">
+                                        Become a Member
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/feedback" className="text-sm font-medium text-white hover:text-white/70 transition-colors">
+                                        Send Feedback
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     {/* Support */}
                     <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">
+                        <h3 className="text-sm font-bold font-display uppercase tracking-wider mb-4 text-white">
                             Get Help
                         </h3>
-                        <ul className="space-y-2">
+                        <ul className="space-y-3">
                             {footerLinks.support.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         href={link.href}
-                                        className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                                        className="text-xs text-secondary hover:text-white transition-colors"
                                     >
                                         {link.name}
                                     </Link>
@@ -76,15 +85,15 @@ export function Footer() {
 
                     {/* Company */}
                     <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">
+                        <h3 className="text-sm font-bold font-display uppercase tracking-wider mb-4 text-white">
                             About Nike
                         </h3>
-                        <ul className="space-y-2">
+                        <ul className="space-y-3">
                             {footerLinks.company.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         href={link.href}
-                                        className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                                        className="text-xs text-secondary hover:text-white transition-colors"
                                     >
                                         {link.name}
                                     </Link>
@@ -93,22 +102,20 @@ export function Footer() {
                         </ul>
                     </div>
 
-                    {/* Social Links */}
-                    <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">
-                            Connect
-                        </h3>
-                        <div className="flex gap-4">
+                    {/* Socials */}
+                    <div className="lg:text-right">
+                        <div className="flex lg:justify-end gap-4">
                             {socialLinks.map((social) => {
                                 const Icon = social.icon;
                                 return (
                                     <a
                                         key={social.name}
                                         href={social.href}
-                                        className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                                        className="w-8 h-8 rounded-full bg-heading text-black flex items-center justify-center hover:bg-white transition-colors"
+                                        style={{ backgroundColor: '#7e7e7e' }}
                                         aria-label={social.name}
                                     >
-                                        <Icon className="h-5 w-5" />
+                                        <Icon className="h-4 w-4 text-[#111111]" fill="currentColor" />
                                     </a>
                                 );
                             })}
@@ -117,19 +124,29 @@ export function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs text-primary-foreground/50">
-                        © {new Date().getFullYear()} Nike, Inc. All Rights Reserved
-                    </p>
-                    <div className="flex gap-6 text-xs text-primary-foreground/50">
-                        <Link href="/terms" className="hover:text-primary-foreground transition-colors">
+                <div className="pt-8 border-t border-[#333333] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-start md:items-center">
+                        <div className="flex items-center gap-2">
+                            <MapPin className="w-4 h-4 text-white" />
+                            <span className="text-xs font-bold text-white">United States</span>
+                        </div>
+                        <p className="text-xs text-[#7e7e7e]">
+                            © {new Date().getFullYear()} Nike, Inc. All Rights Reserved
+                        </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-4 md:gap-6 text-xs text-[#7e7e7e]">
+                        <Link href="/guides" className="hover:text-white transition-colors">
+                            Guides
+                        </Link>
+                        <Link href="/terms" className="hover:text-white transition-colors">
+                            Terms of Sale
+                        </Link>
+                        <Link href="/terms" className="hover:text-white transition-colors">
                             Terms of Use
                         </Link>
-                        <Link href="/privacy" className="hover:text-primary-foreground transition-colors">
-                            Privacy Policy
-                        </Link>
-                        <Link href="/cookies" className="hover:text-primary-foreground transition-colors">
-                            Cookie Settings
+                        <Link href="/privacy" className="hover:text-white transition-colors">
+                            Nike Privacy Policy
                         </Link>
                     </div>
                 </div>

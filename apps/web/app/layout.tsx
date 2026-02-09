@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   description:
     "Shop the latest Nike shoes, apparel, and gear. Free shipping on orders over $100.",
   keywords: ["Nike", "shoes", "sneakers", "running", "basketball", "training"],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

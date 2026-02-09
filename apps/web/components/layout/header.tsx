@@ -1,16 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Search, Menu, X, User, LogOut, Heart } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, User, LogOut, Heart, HelpCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { Button, cn } from "@nike/ui";
 import { useCartStore } from "@/lib/store/cart-store";
 import { useUIStore } from "@/lib/store/ui-store";
 import { CartSheet } from "@/components/cart/cart-sheet";
+import Image from "next/image";
 
 const navigation = [
-    { name: "New Releases", href: "/products?category=new" },
+    { name: "New & Featured", href: "/products?category=new" },
     { name: "Men", href: "/products?category=men" },
     { name: "Women", href: "/products?category=women" },
     { name: "Kids", href: "/products?category=kids" },
@@ -21,232 +22,213 @@ export function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const { data: session, status } = useSession();
     const itemCount = useCartStore((state) => state.getItemCount());
 
     // Prevent hydration mismatch
     useEffect(() => {
         setMounted(true);
+        const handleScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/50">
-            <nav className="container-nike">
-                <div className="flex h-16 items-center justify-between">
-                    {/* Logo */}
-                    <Link href="/" className="flex-shrink-0">
-                        <NikeLogo className="h-5 w-auto" />
-                    </Link>
+        <div className="fixed top-0 left-0 right-0 z-50 flex flex-col font-sans">
+            {/* Top Bar - Hidden on scroll for cleanliness */}
+            <div className={cn(
+                "bg-background-secondary/80 backdrop-blur-sm px-6 py-1.5 flex justify-between items-center text-[11px] font-medium transition-all duration-300 pointer-events-auto",
+                scrolled ? "-translate-y-full opacity-0 pointer-events-none absolute w-full" : "translate-y-0 opacity-100"
+            )}>
+                <div className="flex gap-4">
+                    {/* Placeholder for other brand logos if needed */}
+                </div>
+                <div className="flex gap-3 text-foreground font-semibold">
+                    <Link href="/help" className="hover:text-foreground-muted">Help</Link>
+                    <span className="text-border">|</span>
+                    <Link href="/join" className="hover:text-foreground-muted">Join Us</Link>
+                    {status !== "authenticated" && (
+                        <>
+                            <span className="text-border">|</span>
+                            <Link href="/auth/signin" className="hover:text-foreground-muted">Sign In</Link>
+                        </>
+                    )}
+                </div>
+            </div>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex md:gap-x-8">
-                        {navigation.map((item) => (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                className="text-sm font-medium text-foreground hover:text-foreground-muted transition-colors"
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
-                    </div>
+            {/* Main Header */}
+            <header className={cn(
+                "w-full bg-background transition-all duration-300 border-b",
+                scrolled ? "shadow-sm border-border/50 py-0" : "border-transparent py-2"
+            )}>
+                <nav className="container-nike relative">
+                    <div className="flex h-16 items-center justify-between">
+                        {/* Logo */}
+                        <Link href="/" className="flex-shrink-0 group relative z-10" aria-label="Nike Home">
+                            <Image
+                                src="/nike-logo.svg"
+                                alt="Nike"
+                                width={60}
+                                height={24}
+                                className="h-6 w-auto transition-transform duration-300 group-hover:scale-110"
+                            />
+                        </Link>
 
-                    {/* Right Actions */}
-                    <div className="flex items-center gap-x-2">
-                        {/* Search */}
-                        <div className="relative">
+                        {/* Desktop Navigation */}
+                        <div className="hidden md:absolute md:inset-0 md:flex md:justify-center md:items-center pointer-events-none">
+                            <div className="flex gap-x-6 pointer-events-auto">
+                                {navigation.map((item) => (
+                                    <Link
+                                        key={item.name}
+                                        href={item.href}
+                                        className="relative text-sm font-semibold tracking-wide text-foreground hover:text-foreground group py-4"
+                                    >
+                                        {item.name}
+                                        <span className="absolute bottom-2 left-0 w-full h-0.5 bg-foreground scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left" />
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Right Actions */}
+                        <div className="flex items-center gap-x-1 z-10">
+                            {/* Search */}
+                            <div className="relative group">
+                                <div className={cn(
+                                    "flex items-center bg-background-secondary/50 rounded-full px-3 py-1.5 transition-all duration-300 border border-transparent focus-within:border-border",
+                                    searchOpen ? "w-64 bg-background-secondary" : "w-auto bg-transparent hover:bg-background-secondary/50"
+                                )}>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 hover:bg-transparent"
+                                        onClick={() => setSearchOpen(!searchOpen)}
+                                        aria-label="Search"
+                                    >
+                                        <Search className="h-5 w-5" />
+                                    </Button>
+                                    <input
+                                        type="search"
+                                        placeholder="Search"
+                                        className={cn(
+                                            "bg-transparent border-none outline-none text-sm font-medium placeholder:text-foreground-muted ml-0 transition-all duration-300",
+                                            searchOpen ? "w-full opacity-100 ml-2" : "w-0 opacity-0"
+                                        )}
+                                        onFocus={() => setSearchOpen(true)}
+                                        onBlur={() => !searchOpen && setSearchOpen(false)}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Wishlist */}
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                onClick={() => setSearchOpen(!searchOpen)}
-                                aria-label="Search"
+                                className="rounded-full hover:bg-background-secondary h-10 w-10 transition-colors"
+                                asChild
                             >
-                                <Search className="h-5 w-5" />
+                                <Link href="/wishlist" aria-label="Wishlist">
+                                    <Heart className="h-6 w-6" />
+                                </Link>
                             </Button>
-                            <div
-                                className={cn(
-                                    "absolute right-0 top-full mt-2 w-80 bg-background border border-border rounded-lg shadow-nike p-4 transition-all duration-200",
-                                    searchOpen
-                                        ? "opacity-100 translate-y-0"
-                                        : "opacity-0 -translate-y-2 pointer-events-none"
+
+                            {/* Cart */}
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="relative rounded-full hover:bg-background-secondary h-10 w-10 transition-colors"
+                                onClick={() => useUIStore.getState().openCart()}
+                                aria-label="Cart"
+                            >
+                                <ShoppingBag className="h-6 w-6" />
+                                {mounted && itemCount > 0 && (
+                                    <span className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-foreground text-background text-[10px] flex items-center justify-center font-bold">
+                                        {itemCount > 9 ? "9+" : itemCount}
+                                    </span>
                                 )}
+                            </Button>
+
+                            {/* Mobile menu button */}
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="md:hidden rounded-full hover:bg-background-secondary h-10 w-10"
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                aria-label="Toggle menu"
                             >
-                                <input
-                                    type="search"
-                                    placeholder="Search products..."
-                                    className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-                                    autoFocus={searchOpen}
-                                />
-                            </div>
+                                {mobileMenuOpen ? (
+                                    <X className="h-6 w-6" />
+                                ) : (
+                                    <Menu className="h-6 w-6" />
+                                )}
+                            </Button>
                         </div>
-
-                        {/* Account - show different based on auth state */}
-                        {status === "loading" ? (
-                            <Button variant="ghost" size="icon" disabled>
-                                <User className="h-5 w-5 animate-pulse" />
-                            </Button>
-                        ) : session ? (
-                            <div className="relative group">
-                                <Button variant="ghost" size="icon" aria-label="Account">
-                                    {session.user?.image ? (
-                                        <img
-                                            src={session.user.image}
-                                            alt={session.user.name || "User"}
-                                            className="h-7 w-7 rounded-full"
-                                        />
-                                    ) : (
-                                        <User className="h-5 w-5" />
-                                    )}
-                                </Button>
-                                {/* Dropdown */}
-                                <div className="absolute right-0 top-full mt-2 w-48 bg-background border border-border rounded-lg shadow-nike opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                    <div className="p-3 border-b border-border">
-                                        <p className="font-medium text-sm truncate">
-                                            {session.user?.name || "User"}
-                                        </p>
-                                        <p className="text-xs text-foreground-muted truncate">
-                                            {session.user?.email}
-                                        </p>
-                                    </div>
-                                    <div className="p-1">
-                                        <Link
-                                            href="/account"
-                                            className="block px-3 py-2 text-sm hover:bg-background-secondary rounded-md transition-colors"
-                                        >
-                                            My Account
-                                        </Link>
-                                        <Link
-                                            href="/orders"
-                                            className="block px-3 py-2 text-sm hover:bg-background-secondary rounded-md transition-colors"
-                                        >
-                                            Orders
-                                        </Link>
-                                        <button
-                                            onClick={() => signOut()}
-                                            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-background-secondary rounded-md transition-colors"
-                                        >
-                                            <LogOut className="h-4 w-4" />
-                                            Sign Out
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <Button variant="ghost" size="icon" asChild>
-                                <Link href="/auth/signin" aria-label="Sign In">
-                                    <User className="h-5 w-5" />
-                                </Link>
-                            </Button>
-                        )}
-
-                        {/* Wishlist */}
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            asChild
-                        >
-                            <Link href="/wishlist" aria-label="Wishlist">
-                                <Heart className="h-5 w-5" />
-                            </Link>
-                        </Button>
-
-                        {/* Cart */}
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="relative"
-                            onClick={() => useUIStore.getState().openCart()}
-                            aria-label="Cart"
-                        >
-                            <ShoppingBag className="h-5 w-5" />
-                            {mounted && itemCount > 0 && (
-                                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-accent text-accent-foreground text-xs flex items-center justify-center font-bold">
-                                    {itemCount > 9 ? "9+" : itemCount}
-                                </span>
-                            )}
-                        </Button>
-
-                        {/* Mobile menu button */}
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="md:hidden"
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            aria-label="Toggle menu"
-                        >
-                            {mobileMenuOpen ? (
-                                <X className="h-5 w-5" />
-                            ) : (
-                                <Menu className="h-5 w-5" />
-                            )}
-                        </Button>
                     </div>
-                </div>
+                </nav>
+            </header>
 
-                {/* Mobile Navigation */}
-                <div
-                    className={cn(
-                        "md:hidden overflow-hidden transition-all duration-300",
-                        mobileMenuOpen ? "max-h-80 pb-4" : "max-h-0"
+            {/* Mobile Navigation Overlay */}
+            <div
+                className={cn(
+                    "fixed inset-0 bg-background z-40 md:hidden pt-24 px-6 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                    mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+                )}
+            >
+                <div className="flex flex-col space-y-6">
+                    {navigation.map((item) => (
+                        <Link
+                            key={item.name}
+                            href={item.href}
+                            className="text-2xl font-bold tracking-tight flex justify-between items-center group"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            {item.name}
+                            <span className="text-foreground-muted group-hover:text-foreground transition-colors">→</span>
+                        </Link>
+                    ))}
+
+                    <div className="h-px bg-border my-4" />
+
+                    <div className="space-y-4">
+                        <Link
+                            href="/account"
+                            className="flex items-center gap-3 text-lg font-medium text-foreground-muted hover:text-foreground"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            <User className="h-5 w-5" />
+                            {session ? "My Account" : "Sign In / Join Us"}
+                        </Link>
+                        <Link
+                            href="/help"
+                            className="flex items-center gap-3 text-lg font-medium text-foreground-muted hover:text-foreground"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            <HelpCircle className="h-5 w-5" />
+                            Help
+                        </Link>
+                    </div>
+
+                    {session && (
+                        <button
+                            onClick={() => {
+                                signOut();
+                                setMobileMenuOpen(false);
+                            }}
+                            className="mt-8 py-3 px-6 rounded-full bg-background-secondary text-foreground font-semibold flex items-center justify-center gap-2"
+                        >
+                            <LogOut className="h-5 w-5" />
+                            Sign Out
+                        </button>
                     )}
-                >
-                    <div className="space-y-1 pt-2">
-                        {navigation.map((item) => (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                className="block py-2 text-base font-medium text-foreground hover:text-foreground-muted transition-colors"
-                                onClick={() => setMobileMenuOpen(false)}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
-                        <div className="pt-2 border-t border-border mt-2">
-                            {session ? (
-                                <>
-                                    <Link
-                                        href="/account"
-                                        className="block py-2 text-base font-medium text-foreground"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                    >
-                                        My Account
-                                    </Link>
-                                    <button
-                                        onClick={() => signOut()}
-                                        className="block py-2 text-base font-medium text-destructive"
-                                    >
-                                        Sign Out
-                                    </button>
-                                </>
-                            ) : (
-                                <Link
-                                    href="/auth/signin"
-                                    className="block py-2 text-base font-medium text-foreground"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                >
-                                    Sign In
-                                </Link>
-                            )}
-                        </div>
-                    </div>
                 </div>
-            </nav>
+            </div>
+
             <CartSheet />
-        </header>
+        </div>
     );
 }
 
-function NikeLogo({ className }: { className?: string }) {
-    return (
-        <svg
-            viewBox="0 0 24 24"
-            className={className}
-            fill="currentColor"
-            aria-label="Nike"
-        >
-            <path d="M21 8.25c-1.27-0.089-2.502-0.347-3.72-0.669-2.315-0.612-4.502-1.425-6.606-2.433l-0.126-0.063c-3.766-1.896-7.142-4.322-10.027-7.221l-0.521-0.528 17.558 20.34c1.192 1.381 3.25 1.505 4.595 0.276 0.057-0.052 0.113-0.105 0.169-0.16 1.258-1.258 1.488-3.153 0.601-4.706l-0.071-0.117-1.852-4.719z" />
-        </svg>
-    );
-}
+
 
 export default Header;

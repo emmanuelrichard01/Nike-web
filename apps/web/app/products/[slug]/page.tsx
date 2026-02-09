@@ -73,7 +73,10 @@ async function ProductContent({ slug }: { slug: string }) {
 
             {/* Product Info (Right - 5 cols) */}
             <div className="lg:col-span-5 flex flex-col relative">
-                <ProductInfo product={product} />
+                <ProductInfo product={{
+                    ...product,
+                    price: Number(product.price),
+                }} />
             </div>
 
             {/* Sticky Mobile Bar */}

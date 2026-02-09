@@ -3,6 +3,9 @@ const nextConfig = {
   // Strict mode for better development experience
   reactStrictMode: true,
 
+  // Standalone output for optimized Vercel deployment
+  output: 'standalone',
+
   // Optimize images from external sources
   images: {
     remotePatterns: [
@@ -23,6 +26,9 @@ const nextConfig = {
         hostname: 'avatars.githubusercontent.com', // GitHub avatars
       },
     ],
+    // Optimize image loading
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
   },
 
   // Transpile monorepo packages
@@ -33,6 +39,15 @@ const nextConfig = {
     // Enable server actions
     serverActions: {
       bodySizeLimit: '2mb',
+    },
+    // Optimize CSS
+    optimizeCss: true,
+  },
+
+  // Production logging
+  logging: {
+    fetches: {
+      fullUrl: process.env.NODE_ENV === 'development',
     },
   },
 
@@ -58,6 +73,10 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
+          },
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
           },
         ],
       },

@@ -163,10 +163,10 @@ export default async function Home() {
             {/* 1. LIFESTYLE (Large, 2x2) */}
             <Link
               href="/products?category=lifestyle"
-              className="group md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden bg-black"
+              className="group md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden bg-[#f5f5f5]"
             >
               <Image
-                src="https://images.unsplash.com/photo-1605348532760-6753d6c43329?q=80&w=1200&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=1200&auto=format&fit=crop"
                 alt="Lifestyle"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
@@ -174,10 +174,10 @@ export default async function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-8 left-8">
-                <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 w-fit">
+                <div className="bg-white text-black px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 w-fit">
                   Most Popular
                 </div>
-                <h3 className="text-4xl md:text-5xl font-black text-white mb-2">Lifestyle</h3>
+                <h3 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight">Lifestyle</h3>
                 <div className="flex items-center gap-2 text-white font-bold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                   Shop Collection <ArrowRight className="w-5 h-5" />
                 </div>
@@ -187,10 +187,10 @@ export default async function Home() {
             {/* 2. RUNNING (Tall, 1x2) */}
             <Link
               href="/products?category=running"
-              className="group md:col-span-1 md:row-span-2 relative rounded-3xl overflow-hidden bg-black"
+              className="group md:col-span-1 md:row-span-2 relative rounded-3xl overflow-hidden bg-[#f5f5f5]"
             >
               <Image
-                src="https://images.unsplash.com/photo-1547483238-f400e65ccd56?q=80&w=800&auto=format&fit=crop"
+                src="/images/running_action.png"
                 alt="Running"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
@@ -198,7 +198,7 @@ export default async function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-8 left-6">
-                <h3 className="text-3xl font-black text-white mb-2">Running</h3>
+                <h3 className="text-3xl font-black text-white mb-2 tracking-tight">Running</h3>
                 <div className="flex items-center gap-2 text-white font-bold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                   Shop <ArrowRight className="w-4 h-4" />
                 </div>
@@ -208,10 +208,10 @@ export default async function Home() {
             {/* 3. BASKETBALL (Standard, 1x1) */}
             <Link
               href="/products?category=basketball"
-              className="group relative rounded-3xl overflow-hidden bg-black"
+              className="group relative rounded-3xl overflow-hidden bg-[#f5f5f5]"
             >
               <Image
-                src="https://images.unsplash.com/photo-1560021650-dc12d627b003?q=80&w=800&auto=format&fit=crop"
+                src="/images/basketball_court.png"
                 alt="Basketball"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
@@ -219,17 +219,17 @@ export default async function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6">
-                <h3 className="text-2xl font-black text-white">Basketball</h3>
+                <h3 className="text-2xl font-black text-white tracking-tight">Basketball</h3>
               </div>
             </Link>
 
             {/* 4. TRAINING (Standard, 1x1) */}
             <Link
               href="/products?category=training"
-              className="group relative rounded-3xl overflow-hidden bg-black"
+              className="group relative rounded-3xl overflow-hidden bg-[#f5f5f5]"
             >
               <Image
-                src="https://images.unsplash.com/photo-1517466787929-bc9095c70751?q=80&w=800&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop"
                 alt="Training"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
@@ -237,30 +237,25 @@ export default async function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6">
-                <h3 className="text-2xl font-black text-white">Training</h3>
+                <h3 className="text-2xl font-black text-white tracking-tight">Training</h3>
               </div>
             </Link>
 
           </div>
-
-          {/* Secondary Row (Soccer, Sandals) - Only visible if expanded or keep it clean 
-               Let's stop at the bento grid above, 4 main categories is cleaner. 
-               The user asked to "enhance", cleaner is better.
-           */}
         </div>
       </section>
 
-      {/* Don't Miss Section (Replaces Membership) */}
+      {/* Don't Miss Section - New Season */}
       <section className="py-20 px-4 md:px-12">
         <div className="container-nike">
           <div className="mb-10 flex items-center gap-4">
             <h2 className="text-3xl md:text-4xl font-black tracking-tight uppercase">Don't Miss</h2>
           </div>
 
-          <div className="relative rounded-3xl overflow-hidden bg-[#111] h-[600px] flex items-end p-8 md:p-16 group">
+          <div className="relative rounded-3xl overflow-hidden bg-black h-[600px] flex items-end p-8 md:p-16 group">
             <Image
-              src="https://images.unsplash.com/photo-1628413993904-94ecb60d61ea?q=80&w=2000&auto=format&fit=crop"
-              alt="Don't Miss"
+              src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2000&auto=format&fit=crop"
+              alt="Urban Collection"
               fill
               className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-[1.5s]"
               sizes="100vw"
@@ -268,24 +263,24 @@ export default async function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
             <div className="relative z-10 w-full max-w-3xl">
-              <p className="text-white font-medium mb-4 text-lg">Nike Tech Fleece</p>
+              <p className="text-white font-medium mb-4 text-lg">New Season</p>
               <h3 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.9] tracking-tighter">
-                ENGINEERED <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">TO MOVE.</span>
+                URBAN <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">COLLECTION.</span>
               </h3>
 
               <div className="flex gap-4">
                 <Button className="rounded-full bg-white text-black hover:bg-white/90 font-bold h-12 px-8" asChild>
-                  <Link href="/products">Shop the Collection</Link>
+                  <Link href="/products">Shop Now</Link>
                 </Button>
                 <Button variant="outline" className="rounded-full border-white text-white hover:bg-white/10 font-bold h-12 px-8" asChild>
-                  <Link href="/products?category=lifestyle">Explore Tech Fleece</Link>
+                  <Link href="/products?category=lifestyle">Explore Lifestyle</Link>
                 </Button>
               </div>
             </div>
           </div>
         </div>
       </section>
-    </main>
+    </main >
   );
 }

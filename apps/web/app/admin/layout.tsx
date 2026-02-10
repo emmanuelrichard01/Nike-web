@@ -22,6 +22,9 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
     const user = await prisma.user.findUnique({
         where: { email: session.user.email! },
         select: { role: true },
+    }).catch((e) => {
+        console.error("Failed to fetch user role:", e);
+        return null;
     });
 
     if (user?.role !== "admin") {

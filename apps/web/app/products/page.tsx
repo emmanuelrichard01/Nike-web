@@ -54,14 +54,23 @@ async function ProductsContent({
             skip,
             take: limit,
             orderBy,
+        }).catch((e) => {
+            console.error("Failed to fetch products:", e);
+            return [];
         }),
-        prisma.product.count({ where }),
+        prisma.product.count({ where }).catch((e) => {
+            console.error("Failed to count products:", e);
+            return 0;
+        }),
         prisma.category.findMany({
             include: {
                 _count: {
                     select: { products: true },
                 },
             },
+        }).catch((e) => {
+            console.error("Failed to fetch categories:", e);
+            return [];
         }),
     ]);
 

@@ -8,19 +8,34 @@ export const metadata = {
 
 export default async function AdminDashboard() {
     const [productCount, orderCount, userCount, recentOrders] = await Promise.all([
-        prisma.product.count(),
-        prisma.order.count(),
-        prisma.user.count(),
+        prisma.product.count().catch((e) => {
+            console.error("Failed to fetch product count:", e);
+            return 0;
+        }),
+        prisma.order.count().catch((e) => {
+            console.error("Failed to fetch order count:", e);
+            return 0;
+        }),
+        prisma.user.count().catch((e) => {
+            console.error("Failed to fetch user count:", e);
+            return 0;
+        }),
         prisma.order.findMany({
             take: 5,
             orderBy: { createdAt: "desc" },
             include: { user: true },
+        }).catch((e) => {
+            console.error("Failed to fetch recent orders:", e);
+            return [];
         }),
     ]);
 
     // Calculate revenue (sum of all orders)
     const orders = await prisma.order.findMany({
         select: { total: true },
+    }).catch((e) => {
+        console.error("Failed to fetch orders for revenue:", e);
+        return [];
     });
     const totalRevenue = orders.reduce((sum, order) => sum + Number(order.total), 0);
 

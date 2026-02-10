@@ -286,7 +286,7 @@ export function TrendingSection({
             {/* Products Carousel */}
             <div
                 ref={scrollRef}
-                className="flex gap-5 overflow-x-auto scrollbar-hide px-6 md:px-12 pb-4 scroll-smooth"
+                className="flex gap-5 overflow-x-auto overflow-y-hidden scrollbar-hide px-6 md:px-12 pb-4 scroll-smooth"
                 style={{ scrollSnapType: "x mandatory" }}
             >
                 {products.map((product, i) => (

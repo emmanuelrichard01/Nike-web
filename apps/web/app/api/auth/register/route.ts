@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@nike/database";
 import { z } from "zod";
+import { sendWelcomeEmail } from "@/lib/email";
 
 const registerSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
@@ -42,6 +43,14 @@ export async function POST(request: Request) {
                 email: true,
             },
         });
+
+        // Send welcome email
+        try {
+            await sendWelcomeEmail({ to: email, name });
+        } catch (emailError) {
+            console.error("Failed to send welcome email:", emailError);
+            // Continue execution, don't fail registration
+        }
 
         return NextResponse.json(
             { message: "Account created successfully", user },

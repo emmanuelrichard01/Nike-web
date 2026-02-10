@@ -1,3 +1,5 @@
+import { NikeLogo } from "@/components/ui/nike-logo";
+
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/config";
@@ -51,9 +53,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
                 {/* Logo Area */}
                 <div className="h-20 flex items-center px-8 border-b border-white/[0.08]">
                     <Link href="/admin" className="flex items-center gap-4 group">
-                        <svg className="h-6 w-auto transition-transform duration-300 group-hover:scale-110" viewBox="0 0 69 32" fill="white">
-                            <path d="M68.56 4L18.4 25.36Q12.16 28 7.92 28q-4.8 0-6.96-3.36-1.36-2.16-.8-5.48t2.96-7.08q2-3.04 6.56-8-1.12 2.96-.24 5.36 .56 1.52 1.76 2.08 1.2.56 3.2.56 2.72 0 11.2-4.64L68.56 4z" />
-                        </svg>
+                        <NikeLogo variant="light" size={60} className="transition-transform duration-300 group-hover:scale-110" />
                         <div className="flex flex-col">
                             <span className="font-black text-lg tracking-tight leading-none">ADMIN</span>
                             <span className="text-[10px] font-bold text-[#CCFF00] tracking-widest uppercase">Workspace</span>

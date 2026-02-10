@@ -9,15 +9,11 @@ nike-store/
 ├── apps/
 │   └── web/                    # Next.js 14 Storefront
 │       ├── app/                # App Router pages
-│       │   ├── api/            # API routes
-│       │   ├── cart/           # Cart page
-│       │   └── products/       # Product pages
+│       │   ├── (shop)/         # Public storefront (Home, Product, Cart)
+│       │   ├── admin/          # Admin Dashboard (Protected)
+│       │   └── api/            # API routes
 │       ├── components/         # React components
-│       │   ├── home/           # Homepage components
-│       │   ├── layout/         # Header, Footer
-│       │   └── product/        # Product cards, grids
 │       └── lib/                # Utilities & stores
-│           └── store/          # Zustand state management
 ├── packages/
 │   ├── database/               # Prisma & PostgreSQL
 │   ├── ui/                     # Shared UI components
@@ -27,17 +23,18 @@ nike-store/
 
 ## 🛠️ Tech Stack
 
-| Category          | Technology                |
-| ----------------- | ------------------------- |
-| **Framework**     | Next.js 14 (App Router)   |
-| **Language**      | TypeScript                |
-| **Styling**       | Tailwind CSS              |
-| **Database**      | PostgreSQL (Supabase)     |
-| **ORM**           | Prisma                    |
-| **State**         | Zustand                   |
-| **Data Fetching** | TanStack Query            |
-| **Auth**          | NextAuth.js (coming soon) |
-| **Monorepo**      | Turborepo                 |
+| Category          | Technology              |
+| ----------------- | ----------------------- |
+| **Framework**     | Next.js 14 (App Router) |
+| **Language**      | TypeScript              |
+| **Styling**       | Tailwind CSS            |
+| **Database**      | PostgreSQL (Supabase)   |
+| **ORM**           | Prisma                  |
+| **State**         | Zustand                 |
+| **Data Fetching** | TanStack Query          |
+| **Auth**          | NextAuth.js             |
+| **Payments**      | Stripe                  |
+| **Monorepo**      | Turborepo               |
 
 ## 🚀 Getting Started
 
@@ -46,6 +43,7 @@ nike-store/
 - Node.js 18+
 - npm 10+
 - PostgreSQL database (Supabase recommended)
+- Stripe Account (for payments)
 
 ### Installation
 
@@ -105,10 +103,9 @@ nike-store/
 ### Apps
 
 - **`apps/web`** - Next.js storefront with:
-  - Server-side rendering
-  - Streaming with Suspense
-  - API routes for products/categories
-  - Responsive design
+  - **`(shop)`**: Public e-commerce routes
+  - **`admin`**: Protected admin dashboard
+  - **`api`**: Webhooks and endpoints
 
 ### Packages
 
@@ -119,22 +116,28 @@ nike-store/
 
 ## 🎨 Features
 
-### Implemented (MVP)
+### Storefront
 
-- ✅ Homepage with hero section
-- ✅ Product listing with category filters
-- ✅ Product detail pages with size/color selection
-- ✅ Shopping cart with persistent state
-- ✅ Responsive design
-- ✅ Nike brand design system
+- ✅ Homepage with interactive hero section
+- ✅ Product listing with advanced filters
+- ✅ Product details with variants (Size/Color)
+- ✅ Shopping cart with persistent state (Zustand)
+- ✅ Secure Checkout with Stripe
 
-### Coming Soon
+### Admin Dashboard
 
-- 🔄 NextAuth authentication
-- 🔄 Checkout flow
-- 🔄 Order management
-- 🔄 Admin dashboard
-- 🔄 E2E tests with Playwright
+- ✅ Overview Analytics (Revenue, Orders, Customers)
+- ✅ Product Management (CRUD, Stock control)
+- ✅ Order Management (Status updates)
+- ✅ Customer Insights
+- ✅ Settings & Configuration
+
+### Infrastructure
+
+- ✅ NextAuth Authentication (Google/Credentials)
+- ✅ Role-based Access Control (Admin/User)
+- ✅ Responsive "Glassmorphism" Design System
+- ✅ Docker Support
 
 ## 🔒 Environment Variables
 

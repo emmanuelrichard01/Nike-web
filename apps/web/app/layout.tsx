@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header, Footer, NavbarSpacer } from "@/components/layout";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { Toaster } from "sonner";
 
@@ -43,10 +42,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans`}>
         <AuthProvider>
-          <Header />
-          <NavbarSpacer />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          {children}
           <Toaster position="bottom-right" richColors />
         </AuthProvider>
       </body>

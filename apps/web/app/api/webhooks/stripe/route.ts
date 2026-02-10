@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { stripe, verifyWebhookSignature } from "@/lib/stripe";
-import { prisma } from "@nike/database";
-import { sendOrderConfirmation } from "@/lib/email";
+import { createOrderFromSession } from "@/lib/order";
 import type Stripe from "stripe";
 
 export async function POST(request: Request) {
@@ -33,7 +32,12 @@ export async function POST(request: Request) {
     switch (event.type) {
         case "checkout.session.completed": {
             const session = event.data.object as Stripe.Checkout.Session;
-            await handleCheckoutComplete(session);
+            try {
+                await createOrderFromSession(session);
+            } catch (error) {
+                console.error("Error processing checkout.session.completed:", error);
+                return NextResponse.json({ error: "Order creation failed" }, { status: 500 });
+            }
             break;
         }
         case "payment_intent.succeeded": {
@@ -51,75 +55,4 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ received: true });
-}
-
-async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
-    const orderId = session.metadata?.orderId || `order_${Date.now()}`;
-    const customerEmail = session.customer_details?.email;
-
-    // Get shipping address from customer_details (collect_shipping_address option)
-    const customerAddress = session.customer_details?.address;
-    const shippingAddressStr = customerAddress
-        ? `${customerAddress.line1 || ""}, ${customerAddress.city || ""}, ${customerAddress.state || ""} ${customerAddress.postal_code || ""}, ${customerAddress.country || ""}`
-        : "";
-
-    // Fetch line items with expanded product data to get our metadata
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
-        expand: ["data.price.product"],
-    });
-
-    // Create order in database
-    try {
-        const order = await prisma.order.create({
-            data: {
-                id: orderId,
-                userId: session.client_reference_id || null,
-                status: "CONFIRMED",
-                total: session.amount_total ? session.amount_total / 100 : 0,
-                shippingAddress: shippingAddressStr,
-                stripeSessionId: session.id,
-                items: {
-                    create: lineItems.data.map((item) => {
-                        // Extract real productId from Stripe product metadata
-                        const product = item.price?.product;
-                        const productId =
-                            (typeof product === "object" && product !== null && "metadata" in product
-                                ? (product as { metadata?: { productId?: string } }).metadata?.productId
-                                : undefined) || "unknown";
-
-                        return {
-                            productId,
-                            productName: item.description || "Product",
-                            quantity: item.quantity || 1,
-                            price: item.amount_total ? item.amount_total / 100 : 0,
-                        };
-                    }),
-                },
-            },
-        });
-
-        console.log("Order created:", order.id);
-    } catch (error) {
-        console.error("Failed to create order:", error);
-    }
-
-    // Send confirmation email
-    if (customerEmail) {
-        try {
-            await sendOrderConfirmation({
-                to: customerEmail,
-                orderNumber: orderId,
-                items: lineItems.data.map((item) => ({
-                    name: item.description || "Product",
-                    quantity: item.quantity || 1,
-                    price: item.amount_total || 0,
-                })),
-                total: session.amount_total || 0,
-                shippingAddress: shippingAddressStr || "N/A",
-            });
-            console.log("Confirmation email sent to:", customerEmail);
-        } catch (error) {
-            console.error("Failed to send confirmation email:", error);
-        }
-    }
 }

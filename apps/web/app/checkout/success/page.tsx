@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@nike/ui";
-import { CheckCircle, Package, Truck, Mail, ArrowRight } from "lucide-react";
+import { CheckCircle, Package, Truck, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCartStore } from "@/lib/store/cart-store";
 
@@ -12,16 +12,69 @@ function CheckoutSuccessContent() {
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
     const [orderNumber, setOrderNumber] = useState<string | null>(null);
+    const [isVerifying, setIsVerifying] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const clearCart = useCartStore((state) => state.clearCart);
 
     useEffect(() => {
-        if (sessionId) {
-            // Extract order number from session or generate one
-            setOrderNumber(`ORD-${Date.now().toString(36).toUpperCase()}`);
-            // Clear cart after successful checkout (resets Zustand state + localStorage)
-            clearCart();
+        if (!sessionId) {
+            setIsVerifying(false);
+            return;
         }
+
+        const verifyOrder = async () => {
+            try {
+                const response = await fetch("/api/checkout/verify", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ sessionId }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to verify order");
+                }
+
+                const data = await response.json();
+                setOrderNumber(data.order?.id || `ORD-${sessionId.slice(-8).toUpperCase()}`);
+
+                // Clear cart only after successful verification/creation
+                clearCart();
+            } catch (err) {
+                console.error("Order verification failed:", err);
+                setError("We couldn't confirm your order immediately. Please check your email.");
+            } finally {
+                setIsVerifying(false);
+            }
+        };
+
+        verifyOrder();
     }, [sessionId, clearCart]);
+
+    if (!sessionId) {
+        return (
+            <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center p-4">
+                <div className="bg-white p-8 rounded-2xl shadow-sm text-center max-w-md w-full">
+                    <h1 className="text-xl font-bold mb-4">Invalid Session</h1>
+                    <p className="text-gray-500 mb-6">We couldn't find your order session. Please check your email for confirmation.</p>
+                    <Button className="rounded-full bg-black text-white hover:bg-[#CCFF00] hover:text-black font-bold" asChild>
+                        <Link href="/">Return Home</Link>
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    if (isVerifying) {
+        return (
+            <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center pt-20 pb-12">
+                <div className="text-center">
+                    <Loader2 className="w-12 h-12 text-[#CCFF00] animate-spin mx-auto mb-4" />
+                    <h2 className="text-xl font-bold mb-2">Confirming your order...</h2>
+                    <p className="text-gray-500">Please wait while we finalize your purchase.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#f5f5f5]">

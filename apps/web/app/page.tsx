@@ -14,6 +14,9 @@ export default async function Home() {
     take: 8,
     orderBy: { createdAt: "desc" },
     include: { category: true, variants: true }
+  }).catch((error) => {
+    console.error("Failed to fetch new releases:", error);
+    return [];
   });
 
   const newReleases = newReleasesData.map(p => ({
@@ -25,6 +28,9 @@ export default async function Home() {
     take: 8,
     skip: 0,
     include: { category: true, variants: true }
+  }).catch((error) => {
+    console.error("Failed to fetch trending products:", error);
+    return [];
   });
 
   const trending = trendingData.map(p => ({

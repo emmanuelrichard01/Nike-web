@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth/config";
 import { prisma } from "@nike/database";
 import { Button } from "@nike/ui";
 import Link from "next/link";
-import { User, Package, MapPin, CreditCard, LogOut, CheckCircle, Truck, Clock, Heart, ChevronRight, Settings, ShieldCheck, Gift } from "lucide-react";
+import { User, Package, MapPin, CreditCard, LogOut, CheckCircle, Truck, Clock, Heart, ChevronRight, Settings, ShieldCheck, Star } from "lucide-react";
 
 export const metadata = {
     title: "My Account | Nike",
@@ -17,7 +17,7 @@ export default async function AccountPage() {
         redirect("/auth/signin?callbackUrl=/account");
     }
 
-    const [user, orders, wishlistCount] = await Promise.all([
+    const [user, orders, wishlistCount, reviewCount] = await Promise.all([
         prisma.user.findUnique({
             where: { email: session.user.email! },
         }),
@@ -29,6 +29,9 @@ export default async function AccountPage() {
         }),
         prisma.wishlistItem.count({
             where: { wishlist: { userId: session.user.id } },
+        }),
+        prisma.review.count({
+            where: { userId: session.user.id },
         }),
     ]);
 
@@ -104,10 +107,13 @@ export default async function AccountPage() {
                                 <NavLink href="/account/settings" icon={Settings}>Settings</NavLink>
 
                                 <div className="pt-2 mt-2 border-t border-black/5">
-                                    <button className="flex items-center gap-3 px-4 py-3 text-black/30 hover:text-red-500 transition-colors w-full rounded-xl hover:bg-red-50">
+                                    <Link
+                                        href="/api/auth/signout"
+                                        className="flex items-center gap-3 px-4 py-3 text-black/30 hover:text-red-500 transition-colors w-full rounded-xl hover:bg-red-50"
+                                    >
                                         <LogOut className="h-5 w-5" />
                                         <span className="font-medium">Sign Out</span>
-                                    </button>
+                                    </Link>
                                 </div>
                             </nav>
                         </div>
@@ -131,15 +137,15 @@ export default async function AccountPage() {
                                 accent
                             />
                             <StatCard
-                                icon={Gift}
-                                label="Rewards"
-                                value="0"
-                                href="/rewards"
+                                icon={Star}
+                                label="Reviews"
+                                value={reviewCount.toString()}
+                                href="/account/orders"
                             />
                             <StatCard
                                 icon={MapPin}
                                 label="Addresses"
-                                value="1"
+                                value="0"
                                 href="/account/addresses"
                             />
                         </div>

@@ -6,20 +6,22 @@ import Link from "next/link";
 import { Button } from "@nike/ui";
 import { CheckCircle, Package, Truck, Mail, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useCartStore } from "@/lib/store/cart-store";
 
 function CheckoutSuccessContent() {
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
     const [orderNumber, setOrderNumber] = useState<string | null>(null);
+    const clearCart = useCartStore((state) => state.clearCart);
 
     useEffect(() => {
         if (sessionId) {
             // Extract order number from session or generate one
             setOrderNumber(`ORD-${Date.now().toString(36).toUpperCase()}`);
-            // Clear cart after successful checkout
-            localStorage.removeItem("nike-cart");
+            // Clear cart after successful checkout (resets Zustand state + localStorage)
+            clearCart();
         }
-    }, [sessionId]);
+    }, [sessionId, clearCart]);
 
     return (
         <div className="min-h-screen bg-[#f5f5f5]">

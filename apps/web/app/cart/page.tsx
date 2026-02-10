@@ -56,10 +56,10 @@ export default function CartPage() {
             <div className="min-h-screen bg-[#fafafa]">
                 <div className="bg-white border-b border-black/5">
                     <div className="container-nike py-10">
-                        <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
-                            <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+                        <div className="flex items-center gap-2 text-sm text-black/50 mb-6">
+                            <Link href="/" className="hover:text-black transition-colors">Home</Link>
                             <ChevronRight className="w-4 h-4" />
-                            <span className="text-foreground font-medium">Shopping Bag</span>
+                            <span className="text-black font-medium">Shopping Bag</span>
                         </div>
                         <div className="w-12 h-1 bg-black rounded-full mb-4" />
                         <h1 className="text-4xl md:text-5xl font-black tracking-tight">Shopping Bag</h1>
@@ -76,7 +76,7 @@ export default function CartPage() {
                             <ShoppingBag className="w-12 h-12 text-black/20" />
                         </div>
                         <h2 className="text-2xl md:text-3xl font-black mb-4">Your bag is empty</h2>
-                        <p className="text-foreground/50 mb-10 max-w-md mx-auto text-lg">
+                        <p className="text-black/50 mb-10 max-w-md mx-auto text-lg">
                             Looks like you haven&apos;t added anything to your bag yet.
                         </p>
                         <Button
@@ -113,7 +113,7 @@ export default function CartPage() {
                                 <ShoppingBag className="w-10 h-10" />
                                 Shopping Bag
                             </h1>
-                            <p className="text-foreground/50 mt-3 text-lg">
+                            <p className="text-black/50 mt-3 text-lg">
                                 {items.length} {items.length === 1 ? "Item" : "Items"}
                             </p>
                         </div>
@@ -147,8 +147,8 @@ export default function CartPage() {
                                     </>
                                 ) : (
                                     <>
-                                        <Truck className="w-4 h-4 text-foreground/50" />
-                                        <span className="text-sm text-foreground/60">
+                                        <Truck className="w-4 h-4 text-black/50" />
+                                        <span className="text-sm text-black/60">
                                             Add <span className="font-bold text-black">${(freeShippingThreshold - subtotal).toFixed(2)}</span> more for free shipping
                                         </span>
                                     </>
@@ -207,13 +207,13 @@ export default function CartPage() {
                                                 <h3 className="font-bold text-base md:text-lg line-clamp-2 leading-snug">
                                                     {item.name}
                                                 </h3>
-                                                <p className="text-sm text-foreground/50 mt-1">
+                                                <p className="text-sm text-black/50 mt-1">
                                                     {item.category || "Shoes"} · {item.color} · Size {item.size}
                                                 </p>
                                             </div>
                                             <button
                                                 onClick={() => removeItem(item.id)}
-                                                className="text-foreground/30 hover:text-red-500 transition-colors p-1"
+                                                className="text-black/30 hover:text-red-500 transition-colors p-1"
                                                 aria-label="Remove item"
                                             >
                                                 <Trash2 className="w-5 h-5" />
@@ -257,19 +257,19 @@ export default function CartPage() {
                             <h2 className="text-xl font-black mb-6">Order Summary</h2>
 
                             <div className="space-y-4 mb-6">
-                                <div className="flex justify-between text-foreground/60">
+                                <div className="flex justify-between text-black/60">
                                     <span>Subtotal</span>
-                                    <span className="font-semibold text-foreground">${subtotal.toFixed(2)}</span>
+                                    <span className="font-semibold text-black">${subtotal.toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between text-foreground/60">
+                                <div className="flex justify-between text-black/60">
                                     <span>Shipping</span>
-                                    <span className={`font-semibold ${shipping === 0 ? "text-[#00a843]" : "text-foreground"}`}>
+                                    <span className={`font-semibold ${shipping === 0 ? "text-[#00a843]" : "text-black"}`}>
                                         {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
                                     </span>
                                 </div>
-                                <div className="flex justify-between text-foreground/60">
+                                <div className="flex justify-between text-black/60">
                                     <span>Estimated Tax</span>
-                                    <span className="font-semibold text-foreground">${tax.toFixed(2)}</span>
+                                    <span className="font-semibold text-black">${tax.toFixed(2)}</span>
                                 </div>
                                 <div className="border-t border-black/5 pt-4 flex justify-between">
                                     <span className="font-black text-lg">Total</span>
@@ -309,11 +309,11 @@ export default function CartPage() {
 
                             {/* Trust Badges */}
                             <div className="mt-8 pt-6 border-t border-black/5 space-y-4">
-                                <div className="flex items-center gap-3 text-sm text-foreground/60">
+                                <div className="flex items-center gap-3 text-sm text-black/60">
                                     <Shield className="w-5 h-5" />
                                     <span>Secure checkout powered by Stripe</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-sm text-foreground/60">
+                                <div className="flex items-center gap-3 text-sm text-black/60">
                                     <CreditCard className="w-5 h-5" />
                                     <span>All major credit cards accepted</span>
                                 </div>

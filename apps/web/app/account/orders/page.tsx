@@ -56,7 +56,7 @@ export default async function AccountOrdersPage() {
                     </div>
                 ) : (
                     <div className="space-y-4">
-                        {orders.map((order: any) => (
+                        {orders.map((order) => (
                             <div
                                 key={order.id}
                                 className="bg-white rounded-lg overflow-hidden shadow-sm"
@@ -90,7 +90,7 @@ export default async function AccountOrdersPage() {
                                 {/* Order Items */}
                                 <div className="p-6">
                                     <div className="space-y-4">
-                                        {order.items.map((item: any, idx: number) => (
+                                        {order.items.map((item, idx) => (
                                             <div
                                                 key={item.id}
                                                 className={`flex items-center gap-4 ${idx !== order.items.length - 1 ? 'pb-4 border-b border-[#e5e5e5]' : ''}`}
@@ -141,8 +141,11 @@ export default async function AccountOrdersPage() {
                                         <Button
                                             variant="outline"
                                             className="border-[#ccc] hover:border-[#111] rounded-full px-6 h-10 text-sm"
+                                            asChild
                                         >
-                                            Write a Review
+                                            <Link href={`/products/${order.items[0]?.productId || ''}#reviews`}>
+                                                Write a Review
+                                            </Link>
                                         </Button>
                                     )}
                                 </div>

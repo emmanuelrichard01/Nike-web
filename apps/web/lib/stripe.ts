@@ -10,6 +10,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function createCheckoutSession({
     items,
     customerId,
+    clientReferenceId,
     successUrl,
     cancelUrl,
 }: {
@@ -19,8 +20,10 @@ export async function createCheckoutSession({
         price: number; // in cents
         quantity: number;
         image?: string;
+        productId?: string;
     }>;
     customerId?: string;
+    clientReferenceId?: string;
     successUrl: string;
     cancelUrl: string;
 }) {
@@ -31,6 +34,9 @@ export async function createCheckoutSession({
                 name: item.name,
                 description: item.description,
                 images: item.image ? [item.image] : [],
+                metadata: {
+                    productId: item.productId || "unknown",
+                },
             },
             unit_amount: item.price,
         },
@@ -42,6 +48,7 @@ export async function createCheckoutSession({
         payment_method_types: ["card"],
         line_items: lineItems,
         customer: customerId,
+        client_reference_id: clientReferenceId,
         success_url: successUrl,
         cancel_url: cancelUrl,
         shipping_address_collection: {

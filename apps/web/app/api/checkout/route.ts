@@ -7,6 +7,7 @@ import { z } from "zod";
 const checkoutSchema = z.object({
     items: z.array(
         z.object({
+            productId: z.string().optional(),
             id: z.string(),
             name: z.string(),
             price: z.number(),
@@ -20,7 +21,6 @@ const checkoutSchema = z.object({
 
 export async function POST(request: Request) {
     try {
-        const session = await getServerSession(authOptions);
         const body = await request.json();
         const { items } = checkoutSchema.parse(body);
 
@@ -31,6 +31,9 @@ export async function POST(request: Request) {
             );
         }
 
+        // Get the authenticated user so we can link the order
+        const session = await getServerSession(authOptions);
+
         const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
         const checkoutSession = await createCheckoutSession({
@@ -40,9 +43,9 @@ export async function POST(request: Request) {
                 price: Math.round(item.price * 100), // Convert to cents
                 quantity: item.quantity,
                 image: item.image,
+                productId: item.productId || item.id,
             })),
-            // Only pass customerId if it exists (Stripe customer ID, not user ID)
-            customerId: undefined,
+            clientReferenceId: session?.user?.id,
             successUrl: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
             cancelUrl: `${baseUrl}/cart`,
         });
@@ -62,3 +65,4 @@ export async function POST(request: Request) {
         );
     }
 }
+

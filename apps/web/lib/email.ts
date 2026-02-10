@@ -2,38 +2,40 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const fromEmail = process.env.FROM_EMAIL || "noreply@nike-store.com";
+// Resend requires a verified domain. Use onboarding@resend.dev for testing,
+// or set FROM_EMAIL to your verified custom domain sender.
+const fromEmail = process.env.FROM_EMAIL || "onboarding@resend.dev";
 
 // Order confirmation email
 export async function sendOrderConfirmation({
-    to,
-    orderNumber,
-    items,
-    total,
-    shippingAddress,
+  to,
+  orderNumber,
+  items,
+  total,
+  shippingAddress,
 }: {
-    to: string;
-    orderNumber: string;
-    items: Array<{ name: string; quantity: number; price: number }>;
-    total: number;
-    shippingAddress: string;
+  to: string;
+  orderNumber: string;
+  items: Array<{ name: string; quantity: number; price: number }>;
+  total: number;
+  shippingAddress: string;
 }) {
-    const itemsHtml = items
-        .map(
-            (item) =>
-                `<tr>
+  const itemsHtml = items
+    .map(
+      (item) =>
+        `<tr>
           <td style="padding: 12px; border-bottom: 1px solid #eee;">${item.name}</td>
           <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
           <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: right;">$${(item.price / 100).toFixed(2)}</td>
         </tr>`
-        )
-        .join("");
+    )
+    .join("");
 
-    return resend.emails.send({
-        from: `Nike Store <${fromEmail}>`,
-        to,
-        subject: `Order Confirmed - ${orderNumber}`,
-        html: `
+  return resend.emails.send({
+    from: `Nike Store <${fromEmail}>`,
+    to,
+    subject: `Order Confirmed - ${orderNumber}`,
+    html: `
       <!DOCTYPE html>
       <html>
         <head>
@@ -84,22 +86,22 @@ export async function sendOrderConfirmation({
         </body>
       </html>
     `,
-    });
+  });
 }
 
 // Password reset email  
 export async function sendPasswordReset({
-    to,
-    resetUrl,
+  to,
+  resetUrl,
 }: {
-    to: string;
-    resetUrl: string;
+  to: string;
+  resetUrl: string;
 }) {
-    return resend.emails.send({
-        from: `Nike Store <${fromEmail}>`,
-        to,
-        subject: "Reset Your Password",
-        html: `
+  return resend.emails.send({
+    from: `Nike Store <${fromEmail}>`,
+    to,
+    subject: "Reset Your Password",
+    html: `
       <!DOCTYPE html>
       <html>
         <head>
@@ -133,16 +135,16 @@ export async function sendPasswordReset({
         </body>
       </html>
     `,
-    });
+  });
 }
 
 // Welcome email
 export async function sendWelcomeEmail({ to, name }: { to: string; name: string }) {
-    return resend.emails.send({
-        from: `Nike Store <${fromEmail}>`,
-        to,
-        subject: "Welcome to Nike Store!",
-        html: `
+  return resend.emails.send({
+    from: `Nike Store <${fromEmail}>`,
+    to,
+    subject: "Welcome to Nike Store!",
+    html: `
       <!DOCTYPE html>
       <html>
         <head>
@@ -180,5 +182,5 @@ export async function sendWelcomeEmail({ to, name }: { to: string; name: string 
         </body>
       </html>
     `,
-    });
+  });
 }

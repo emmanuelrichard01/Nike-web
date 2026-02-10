@@ -19,6 +19,7 @@ interface Variant {
 
 interface Product {
     id: string;
+    slug: string;
     name: string;
     description: string;
     price: number | string;
@@ -104,7 +105,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 name: product.name,
                 price: Number(product.price),
                 image: product.images[0],
-                slug: product.id, // Using ID as slug if slug not available in product interface, or passed prop?
+                slug: product.slug,
                 category: product.category?.name || "Shoe",
             });
             toast.success("Added to wishlist");

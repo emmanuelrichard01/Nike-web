@@ -63,8 +63,10 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
         ? `${customerAddress.line1 || ""}, ${customerAddress.city || ""}, ${customerAddress.state || ""} ${customerAddress.postal_code || ""}, ${customerAddress.country || ""}`
         : "";
 
-    // Fetch line items
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+    // Fetch line items with expanded product data to get our metadata
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+        expand: ["data.price.product"],
+    });
 
     // Create order in database
     try {
@@ -77,12 +79,21 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
                 shippingAddress: shippingAddressStr,
                 stripeSessionId: session.id,
                 items: {
-                    create: lineItems.data.map((item) => ({
-                        productId: (item.price?.product as string) || "unknown",
-                        productName: item.description || "Product",
-                        quantity: item.quantity || 1,
-                        price: item.amount_total ? item.amount_total / 100 : 0,
-                    })),
+                    create: lineItems.data.map((item) => {
+                        // Extract real productId from Stripe product metadata
+                        const product = item.price?.product;
+                        const productId =
+                            (typeof product === "object" && product !== null && "metadata" in product
+                                ? (product as { metadata?: { productId?: string } }).metadata?.productId
+                                : undefined) || "unknown";
+
+                        return {
+                            productId,
+                            productName: item.description || "Product",
+                            quantity: item.quantity || 1,
+                            price: item.amount_total ? item.amount_total / 100 : 0,
+                        };
+                    }),
                 },
             },
         });

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ProductGallery } from "@/components/product/gallery/product-gallery";
 import { StickyAddToCart } from "@/components/product/sticky-add-to-cart";
 import { ProductInfo } from "@/components/product/product-info";
+import { ReviewSection } from "@/components/product/review-section";
 import { ChevronRight, Star, Shield, Truck, RotateCcw } from "lucide-react";
 
 interface ProductPageProps {
@@ -133,8 +134,8 @@ async function ProductContent({ slug }: { slug: string }) {
                                             <Star
                                                 key={i}
                                                 className={`w-4 h-4 ${i < Math.round(avgRating)
-                                                        ? "fill-[#c0ff00] text-[#c0ff00]"
-                                                        : "fill-black/10 text-black/10"
+                                                    ? "fill-[#c0ff00] text-[#c0ff00]"
+                                                    : "fill-black/10 text-black/10"
                                                     }`}
                                             />
                                         ))}
@@ -152,6 +153,13 @@ async function ProductContent({ slug }: { slug: string }) {
                     </div>
                 </div>
             </div>
+
+            {/* Reviews Section */}
+            <ReviewSection
+                productId={product.id}
+                initialAvgRating={avgRating}
+                initialReviewCount={product.reviews.length}
+            />
 
             {/* Sticky Mobile Bar */}
             <StickyAddToCart product={{ name: product.name, price: Number(product.price), image: images[0] }} />

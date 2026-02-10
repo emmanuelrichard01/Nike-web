@@ -44,13 +44,10 @@ export async function POST(request: Request) {
             },
         });
 
-        // Send welcome email
-        try {
-            await sendWelcomeEmail({ to: email, name });
-        } catch (emailError) {
-            console.error("Failed to send welcome email:", emailError);
-            // Continue execution, don't fail registration
-        }
+        // Send welcome email (fire-and-forget — don't block registration)
+        sendWelcomeEmail({ to: email, name: name }).catch((err) =>
+            console.error("Failed to send welcome email:", err)
+        );
 
         return NextResponse.json(
             { message: "Account created successfully", user },

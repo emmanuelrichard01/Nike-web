@@ -74,10 +74,10 @@ export default function WishlistPage() {
             <div className="bg-white border-b border-black/5">
                 <div className="container-nike py-10 md:py-14">
                     {/* Breadcrumb */}
-                    <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
-                        <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+                    <div className="flex items-center gap-2 text-sm text-black/50 mb-6">
+                        <Link href="/" className="hover:text-black transition-colors">Home</Link>
                         <ChevronRight className="w-4 h-4" />
-                        <span className="text-foreground font-medium">Favorites</span>
+                        <span className="text-black font-medium">Favorites</span>
                     </div>
 
                     <div className="flex items-end justify-between">
@@ -87,7 +87,7 @@ export default function WishlistPage() {
                                 <Heart className="w-10 h-10 fill-[#ff4d4d] text-[#ff4d4d]" />
                                 Favorites
                             </h1>
-                            <p className="text-foreground/50 mt-3 text-lg">
+                            <p className="text-black/50 mt-3 text-lg">
                                 {items.length} {items.length === 1 ? "Item" : "Items"} saved
                             </p>
                         </div>
@@ -121,7 +121,7 @@ export default function WishlistPage() {
                         <h2 className="text-2xl md:text-3xl font-black mb-4">
                             Your wishlist is empty
                         </h2>
-                        <p className="text-foreground/50 mb-10 max-w-md mx-auto text-lg">
+                        <p className="text-black/50 mb-10 max-w-md mx-auto text-lg">
                             Start browsing and tap the heart icon on products you love.
                         </p>
                         <Button
@@ -208,10 +208,10 @@ export default function WishlistPage() {
 
                                         {/* Info */}
                                         <div className="space-y-1.5">
-                                            <h3 className="font-semibold text-base line-clamp-1 group-hover:text-foreground/70 transition-colors">
+                                            <h3 className="font-semibold text-base line-clamp-1 group-hover:text-black/70 transition-colors">
                                                 {item.name}
                                             </h3>
-                                            <p className="text-sm text-foreground/50">
+                                            <p className="text-sm text-black/50">
                                                 {item.category || "Shoes"}
                                             </p>
                                             <p className="font-bold text-base">

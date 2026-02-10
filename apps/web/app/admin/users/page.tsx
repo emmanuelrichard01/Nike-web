@@ -1,16 +1,21 @@
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth/config";
 import { prisma } from "@nike/database";
-import { Button } from "@nike/ui";
-import { User, Shield, ShieldCheck, Mail, Calendar } from "lucide-react";
+import {
+    Search,
+    User,
+    Shield,
+    ShieldCheck,
+    Mail,
+    Calendar,
+    MoreHorizontal,
+    ShoppingBag,
+    Star
+} from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export const metadata = {
+    title: "Customers — Admin | Nike",
+};
 
 export default async function AdminUsersPage() {
-    const session = await getServerSession(authOptions);
-    if (!session) redirect("/auth/signin?callbackUrl=/admin/users");
-
     const users = await prisma.user.findMany({
         orderBy: { createdAt: "desc" },
         select: {
@@ -24,57 +29,103 @@ export default async function AdminUsersPage() {
     });
 
     return (
-        <div>
-            <div className="flex items-center justify-between mb-8">
+        <div className="max-w-7xl">
+            {/* ─── Header ─── */}
+            <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold">Users</h1>
-                    <p className="text-sm text-black/50 mt-1">{users.length} registered users</p>
+                    <h1 className="text-2xl font-black tracking-tight">Customers</h1>
+                    <p className="text-sm text-black/40 mt-1">
+                        {users.length} registered users
+                    </p>
+                </div>
+
+                {/* Search (Visual Only) */}
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black/30" />
+                    <input
+                        type="text"
+                        placeholder="Search customers..."
+                        className="h-10 pl-9 pr-4 rounded-xl border border-black/[0.08] text-sm bg-white focus:outline-none focus:border-black/20 focus:ring-2 focus:ring-black/[0.03] transition-all w-64"
+                    />
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-black/5 overflow-hidden">
+            {/* ─── Table ─── */}
+            <div className="bg-white rounded-2xl border border-black/[0.04] overflow-hidden">
                 <table className="w-full">
                     <thead>
-                        <tr className="border-b border-black/5 text-left text-xs font-semibold text-black/40 uppercase tracking-wider">
-                            <th className="px-6 py-4">User</th>
-                            <th className="px-6 py-4">Role</th>
-                            <th className="px-6 py-4">Orders</th>
-                            <th className="px-6 py-4">Reviews</th>
-                            <th className="px-6 py-4">Joined</th>
+                        <tr className="border-b border-black/[0.04]">
+                            <th className="text-left px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider text-black/30">User</th>
+                            <th className="text-left px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider text-black/30">Role</th>
+                            <th className="text-left px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider text-black/30">Activity</th>
+                            <th className="text-left px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider text-black/30">Joined</th>
+                            <th className="text-right px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider text-black/30">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-black/5">
+                    <tbody className="divide-y divide-black/[0.03]">
                         {users.map((user) => (
-                            <tr key={user.id} className="hover:bg-black/[0.02] transition-colors">
-                                <td className="px-6 py-4">
+                            <tr key={user.id} className="hover:bg-black/[0.01] transition-colors group">
+                                <td className="px-6 py-3.5">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold">
-                                            {user.name?.[0]?.toUpperCase() || "?"}
+                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-black/[0.05] to-black/[0.1] flex items-center justify-center text-sm font-bold text-black/50">
+                                            {user.name?.[0]?.toUpperCase() || <User className="w-5 h-5 opacity-50" />}
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-sm">{user.name || "No name"}</p>
-                                            <p className="text-xs text-black/40">{user.email}</p>
+                                            <p className="font-semibold text-sm text-black/90">{user.name || "No name"}</p>
+                                            <div className="flex items-center gap-1.5 text-[11px] text-black/40">
+                                                <Mail className="w-3 h-3" />
+                                                {user.email}
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full ${user.role === "admin"
+                                <td className="px-6 py-3.5">
+                                    <span className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-lg ${user.role === "admin"
                                             ? "bg-black text-white"
-                                            : "bg-black/5 text-black/60"
+                                            : "bg-black/[0.04] text-black/60"
                                         }`}>
                                         {user.role === "admin" ? <ShieldCheck className="w-3 h-3" /> : <User className="w-3 h-3" />}
-                                        {user.role}
+                                        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 text-sm text-black/60">{user._count.orders}</td>
-                                <td className="px-6 py-4 text-sm text-black/60">{user._count.reviews}</td>
-                                <td className="px-6 py-4 text-sm text-black/40">
-                                    {new Date(user.createdAt).toLocaleDateString()}
+                                <td className="px-6 py-3.5">
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex items-center gap-1.5" title="Orders">
+                                            <ShoppingBag className="w-3.5 h-3.5 text-black/30" />
+                                            <span className="text-sm font-medium">{user._count.orders}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5" title="Reviews">
+                                            <Star className="w-3.5 h-3.5 text-black/30" />
+                                            <span className="text-sm font-medium">{user._count.reviews}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="px-6 py-3.5 text-sm text-black/40">
+                                    <div className="flex items-center gap-2">
+                                        <Calendar className="w-3.5 h-3.5 opacity-50" />
+                                        {new Date(user.createdAt).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            day: "numeric",
+                                            year: "numeric"
+                                        })}
+                                    </div>
+                                </td>
+                                <td className="px-6 py-3.5 text-right">
+                                    <button className="p-2 rounded-lg hover:bg-black/[0.05] text-black/20 hover:text-black transition-colors">
+                                        <MoreHorizontal className="w-4 h-4" />
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+
+                {users.length === 0 && (
+                    <div className="py-16 text-center">
+                        <User className="w-10 h-10 text-black/10 mx-auto mb-3" />
+                        <p className="font-bold text-sm text-black/40">No users found</p>
+                    </div>
+                )}
             </div>
         </div>
     );

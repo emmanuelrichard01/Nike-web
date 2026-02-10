@@ -1,91 +1,174 @@
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth/config";
-import { Settings, Globe, Bell, Palette, Database } from "lucide-react";
+import {
+    Globe,
+    Bell,
+    Palette,
+    Database,
+    ChevronRight,
+    Save,
+    Lock,
+    Mail,
+    CreditCard
+} from "lucide-react";
+import { Button } from "@nike/ui";
 
-export const dynamic = "force-dynamic";
+export const metadata = {
+    title: "Settings — Admin | Nike",
+};
 
-export default async function AdminSettingsPage() {
-    const session = await getServerSession(authOptions);
-    if (!session) redirect("/auth/signin?callbackUrl=/admin/settings");
-
-    const settingsGroups = [
-        {
-            icon: Globe,
-            title: "General",
-            description: "Store name, currency, and regional settings",
-            items: [
-                { label: "Store Name", value: "Nike Store" },
-                { label: "Currency", value: "USD ($)" },
-                { label: "Timezone", value: "America/New_York" },
-            ],
-        },
-        {
-            icon: Bell,
-            title: "Notifications",
-            description: "Email alerts and notification preferences",
-            items: [
-                { label: "Order Confirmations", value: "Enabled" },
-                { label: "Low Stock Alerts", value: "Disabled" },
-                { label: "New User Notifications", value: "Enabled" },
-            ],
-        },
-        {
-            icon: Palette,
-            title: "Appearance",
-            description: "Theme, colors, and branding",
-            items: [
-                { label: "Theme", value: "Light" },
-                { label: "Primary Color", value: "#000000" },
-                { label: "Logo", value: "Nike Swoosh" },
-            ],
-        },
-        {
-            icon: Database,
-            title: "Data",
-            description: "Database and storage configuration",
-            items: [
-                { label: "Database", value: "PostgreSQL (Supabase)" },
-                { label: "File Storage", value: "Default" },
-                { label: "Cache", value: "None" },
-            ],
-        },
-    ];
-
+export default function AdminSettingsPage() {
     return (
-        <div>
-            <div className="mb-8">
-                <h1 className="text-2xl font-bold">Settings</h1>
-                <p className="text-sm text-black/50 mt-1">Manage your store configuration</p>
+        <div className="max-w-4xl">
+            {/* ─── Header ─── */}
+            <div className="flex items-center justify-between mb-8">
+                <div>
+                    <h1 className="text-2xl font-black tracking-tight">Settings</h1>
+                    <p className="text-sm text-black/40 mt-1">
+                        Manage your store preferences and configuration
+                    </p>
+                </div>
+                <Button className="rounded-xl bg-black text-white hover:bg-black/80 h-10 px-5 text-sm font-bold">
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Changes
+                </Button>
             </div>
 
             <div className="space-y-6">
-                {settingsGroups.map((group) => (
-                    <div key={group.title} className="bg-white rounded-xl border border-black/5 overflow-hidden">
-                        <div className="px-6 py-4 border-b border-black/5 flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-lg bg-black/5 flex items-center justify-center">
-                                <group.icon className="w-4 h-4 text-black/60" />
-                            </div>
-                            <div>
-                                <h2 className="font-semibold text-sm">{group.title}</h2>
-                                <p className="text-xs text-black/40">{group.description}</p>
-                            </div>
-                        </div>
-                        <div className="divide-y divide-black/5">
-                            {group.items.map((item) => (
-                                <div key={item.label} className="px-6 py-4 flex items-center justify-between">
-                                    <span className="text-sm text-black/60">{item.label}</span>
-                                    <span className="text-sm font-medium">{item.value}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ))}
+                <SettingsGroup
+                    icon={Globe}
+                    title="General Settings"
+                    description="Store details and localization"
+                >
+                    <SettingsRow label="Store Name" value="Nike Store" />
+                    <SettingsRow label="Support Email" value="support@nike-store.com" />
+                    <SettingsRow label="Currency" value="USD ($)" badge="Default" />
+                    <SettingsRow label="Timezone" value="America/New_York (UTC-05:00)" />
+                </SettingsGroup>
+
+                <SettingsGroup
+                    icon={Bell}
+                    title="Notifications"
+                    description="Email and push notification triggers"
+                >
+                    <ToggleRow label="Order Confirmation" description="Send email when customer places order" defaultOn />
+                    <ToggleRow label="Shipping Updates" description="Notify customer when order ships" defaultOn />
+                    <ToggleRow label="Low Stock Alerts" description="Notify admin when stock is below threshold" />
+                    <ToggleRow label="New User Signup" description="Notify admin when a new user registers" defaultOn />
+                </SettingsGroup>
+
+                <SettingsGroup
+                    icon={Palette}
+                    title="Store Appearance"
+                    description="Theme and branding customization"
+                >
+                    <SettingsRow label="Theme" value="Light Mode" badge="System" />
+                    <SettingsRow label="Brand Color" value="#000000" colorPreview="#000000" />
+                    <SettingsRow label="Font Family" value="Helvetica Now / Inter" />
+                </SettingsGroup>
+
+                <SettingsGroup
+                    icon={Lock}
+                    title="Security & Access"
+                    description="Manage admin access and API keys"
+                >
+                    <SettingsRow label="Admin Access" value="2FA Enforced" badge="Secure" />
+                    <SettingsRow label="API Tokens" value="************" action="Rotate" />
+                </SettingsGroup>
             </div>
 
-            <p className="text-center text-xs text-black/30 mt-8">
-                Settings are read-only in this demo. Connect to your admin backend to enable editing.
-            </p>
+            <div className="mt-8 p-4 rounded-xl bg-amber-50 border border-amber-100/50 text-amber-900/60 text-xs text-center font-medium">
+                Note: This is a demo settings page. Configuration changes are disabled in this environment.
+            </div>
+        </div>
+    );
+}
+
+// ─── Components ───
+
+function SettingsGroup({
+    icon: Icon,
+    title,
+    description,
+    children
+}: {
+    icon: any,
+    title: string,
+    description: string,
+    children: React.ReactNode
+}) {
+    return (
+        <div className="bg-white rounded-2xl border border-black/[0.04] overflow-hidden">
+            <div className="px-6 py-4 border-b border-black/[0.04] flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-black/[0.04] flex items-center justify-center text-black/60">
+                    <Icon className="w-4 h-4" />
+                </div>
+                <div>
+                    <h2 className="font-bold text-sm">{title}</h2>
+                    <p className="text-[11px] text-black/40 font-medium">{description}</p>
+                </div>
+            </div>
+            <div className="divide-y divide-black/[0.03]">
+                {children}
+            </div>
+        </div>
+    );
+}
+
+function SettingsRow({
+    label,
+    value,
+    badge,
+    colorPreview,
+    action
+}: {
+    label: string,
+    value: string,
+    badge?: string,
+    colorPreview?: string,
+    action?: string
+}) {
+    return (
+        <div className="px-6 py-4 flex items-center justify-between group hover:bg-black/[0.01] transition-colors">
+            <span className="text-sm font-medium text-black/70">{label}</span>
+            <div className="flex items-center gap-3">
+                {colorPreview && (
+                    <div className="w-4 h-4 rounded-full border border-black/10" style={{ backgroundColor: colorPreview }} />
+                )}
+                {badge && (
+                    <span className="text-[10px] font-bold bg-black/[0.05] text-black/60 px-2 py-0.5 rounded-md">
+                        {badge}
+                    </span>
+                )}
+                <span className="text-sm font-semibold text-black">{value}</span>
+                {action ? (
+                    <button className="text-xs font-bold text-black border border-black/10 px-3 py-1 rounded-lg hover:bg-black hover:text-white transition-all ml-2">
+                        {action}
+                    </button>
+                ) : (
+                    <ChevronRight className="w-4 h-4 text-black/10 group-hover:text-black/30 transition-colors" />
+                )}
+            </div>
+        </div>
+    );
+}
+
+function ToggleRow({
+    label,
+    description,
+    defaultOn
+}: {
+    label: string,
+    description: string,
+    defaultOn?: boolean
+}) {
+    return (
+        <div className="px-6 py-4 flex items-center justify-between group hover:bg-black/[0.01] transition-colors">
+            <div>
+                <p className="text-sm font-medium text-black/70">{label}</p>
+                <p className="text-[11px] text-black/30 w-full max-w-[300px]">{description}</p>
+            </div>
+            <div className={`w-11 h-6 rounded-full relative cursor-pointer transition-colors ${defaultOn ? "bg-black" : "bg-black/10"}`}>
+                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${defaultOn ? "right-1" : "left-1"}`} />
+            </div>
         </div>
     );
 }

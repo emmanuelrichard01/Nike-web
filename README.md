@@ -1,161 +1,187 @@
-# Nike Store - E-Commerce Platform
+# Nike Store - Premium E-Commerce Platform
 
-A production-ready, MAANG-level Nike shoe e-commerce application built with modern web technologies.
+![Nike Store Banner](/public/opengraph-image.png)
+
+<div align="center">
+
+[![Next.js](https://img.shields.io/badge/Next.js-14.1-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.0-2D3748?style=for-the-badge&logo=prisma)](https://www.prisma.io/)
+[![Stripe](https://img.shields.io/badge/Stripe-Payments-635BFF?style=for-the-badge&logo=stripe)](https://stripe.com/)
+
+</div>
+
+---
+
+## ⚡ Overview
+
+**Nike Store** is a production-grade, full-stack e-commerce application engineered to replicate the premium digital experience of top-tier retail brands. Built on a modern **Next.js 14** monorepo architecture, it features a high-performance storefront, a robust admin dashboard, and seamless payment integration.
+
+**Why this project?**
+This codebase serves as a reference implementation for complex, scalable web applications, demonstrating best practices in:
+
+- **Server-Side Rendering (SSR) & Streaming**
+- **Edge-ready Database Patterns**
+- **Advanced State Management**
+- **Secure Payment Flows**
 
 ## 🏗️ Architecture
 
+The project follows a **Turborepo** monorepo structure to ensure modularity and scalability.
+
+```mermaid
+graph TD
+    User((User))
+    Admin((Admin))
+
+    subgraph Client
+        Storefront[Storefront (Next.js)]
+        Dashboard[Admin Dashboard (Next.js)]
+    end
+
+    subgraph Server
+        API[API Routes]
+        Auth[NextAuth.js]
+        DB[(PostgreSQL + Prisma)]
+        StripeAPI[Stripe API]
+    end
+
+    User -->|Browses| Storefront
+    User -->|Pays| StripeAPI
+    Admin -->|Manages| Dashboard
+
+    Storefront -->|Fetches Data| API
+    Dashboard -->|CRUD Ops| API
+
+    API -->|Queries| DB
+    API -->|Authenticates| Auth
+    StripeAPI -->|Webhooks| API
 ```
+
+### Directory Structure
+
+```bash
 nike-store/
 ├── apps/
-│   └── web/                    # Next.js 14 Storefront
-│       ├── app/                # App Router pages
-│       │   ├── (shop)/         # Public storefront (Home, Product, Cart)
-│       │   ├── admin/          # Admin Dashboard (Protected)
-│       │   └── api/            # API routes
-│       ├── components/         # React components
-│       └── lib/                # Utilities & stores
+│   └── web/                    # The Main Application
+│       ├── app/
+│       │   ├── (shop)/         # Public Shop Routes (Isolated Layout)
+│       │   ├── admin/          # Protected Admin Routes (Isolated Layout)
+│       │   └── api/            # Server-side API Endpoints
+│       ├── components/         # Atomic Design Components
+│       └── lib/                # Shared Logic (Auth, Stripe, Utils)
 ├── packages/
-│   ├── database/               # Prisma & PostgreSQL
-│   ├── ui/                     # Shared UI components
-│   ├── eslint-config/          # ESLint configuration
-│   └── tsconfig/               # TypeScript configs
+│   ├── database/               # Shared Type-Safe Database Module
+│   ├── ui/                     # Design System (Radix UI + Tailwind)
+│   └── config/                 # Shared Configs (ESLint, TSConfig)
 ```
 
-## 🛠️ Tech Stack
+## ✨ Key Features
 
-| Category          | Technology              |
-| ----------------- | ----------------------- |
-| **Framework**     | Next.js 14 (App Router) |
-| **Language**      | TypeScript              |
-| **Styling**       | Tailwind CSS            |
-| **Database**      | PostgreSQL (Supabase)   |
-| **ORM**           | Prisma                  |
-| **State**         | Zustand                 |
-| **Data Fetching** | TanStack Query          |
-| **Auth**          | NextAuth.js             |
-| **Payments**      | Stripe                  |
-| **Monorepo**      | Turborepo               |
+### 🛒 Immersive Storefront
+
+- **Performance First**: Built on Next.js App Router with React Server Components for blazing fast page loads.
+- **Dynamic UX**: "Liquid" animations and micro-interactions powered by Framer Motion.
+- **Advanced Filtering**: Filter products by category, size, color, and price range in real-time.
+- **Persistent Cart**: Robust cart management using Zustand, persisted to local storage.
+
+### 🛡️ Admin Command Center
+
+- **Glassmorphism Console**: A visually stunning dashboard for managing your business.
+- **Product Management**: Full CRUD capabilities for products and variants (SKUs).
+- **Order Fulfillment**: Track payments, shipping status, and order timeline.
+- **Analytics**: Real-time overview of revenue, sales velocity, and customer growth.
+
+### 💳 Secure Payments
+
+- **Stripe Integration**: Fully integrated Stripe Checkout flow.
+- **Webhook Handling**: Robust webhook processing with signature verification.
+- **Order Verification**: Fallback mechanisms to ensure order integrity even if webhooks fail.
 
 ## 🚀 Getting Started
 
-### Prerequisites
+Follow these steps to spin up your local instance.
 
-- Node.js 18+
-- npm 10+
-- PostgreSQL database (Supabase recommended)
-- Stripe Account (for payments)
+### 1. Prerequisites
 
-### Installation
+Ensure you have the following installed:
 
-1. **Clone and install dependencies:**
+- [Node.js 18+](https://nodejs.org/)
+- [Docker](https://www.docker.com/) (optional, for local DB)
+- Stripe Account (for API keys)
 
-   ```bash
-   npm install
-   ```
+### 2. Installation
 
-2. **Set up environment variables:**
+```bash
+# Clone the repository
+git clone https://github.com/your-username/nike-store.git
 
-   ```bash
-   # Copy example files
-   cp apps/web/.env.example apps/web/.env
-   cp packages/database/.env.example packages/database/.env
-   ```
-
-3. **Configure your database:**
-   - Create a Supabase project at [supabase.com](https://supabase.com)
-   - Copy connection strings to `.env` files
-
-4. **Generate Prisma client & push schema:**
-
-   ```bash
-   npm run db:generate
-   npm run db:push
-   ```
-
-5. **Seed the database:**
-
-   ```bash
-   npm run db:seed
-   ```
-
-6. **Start development server:**
-
-   ```bash
-   npm run dev
-   ```
-
-   Open [http://localhost:3000](http://localhost:3000)
-
-## 📦 Available Scripts
-
-| Script              | Description                 |
-| ------------------- | --------------------------- |
-| `npm run dev`       | Start development server    |
-| `npm run build`     | Build for production        |
-| `npm run start`     | Start production server     |
-| `npm run lint`      | Lint all packages           |
-| `npm run format`    | Format code with Prettier   |
-| `npm run db:studio` | Open Prisma Studio          |
-| `npm run db:seed`   | Seed database with products |
-
-## 📁 Project Structure
-
-### Apps
-
-- **`apps/web`** - Next.js storefront with:
-  - **`(shop)`**: Public e-commerce routes
-  - **`admin`**: Protected admin dashboard
-  - **`api`**: Webhooks and endpoints
-
-### Packages
-
-- **`@nike/database`** - Database layer with Prisma ORM
-- **`@nike/ui`** - Shared component library (Button, Card, Input, Badge, Skeleton)
-- **`@nike/eslint-config`** - Shared ESLint configuration
-- **`@nike/tsconfig`** - Shared TypeScript configurations
-
-## 🎨 Features
-
-### Storefront
-
-- ✅ Homepage with interactive hero section
-- ✅ Product listing with advanced filters
-- ✅ Product details with variants (Size/Color)
-- ✅ Shopping cart with persistent state (Zustand)
-- ✅ Secure Checkout with Stripe
-
-### Admin Dashboard
-
-- ✅ Overview Analytics (Revenue, Orders, Customers)
-- ✅ Product Management (CRUD, Stock control)
-- ✅ Order Management (Status updates)
-- ✅ Customer Insights
-- ✅ Settings & Configuration
-
-### Infrastructure
-
-- ✅ NextAuth Authentication (Google/Credentials)
-- ✅ Role-based Access Control (Admin/User)
-- ✅ Responsive "Glassmorphism" Design System
-- ✅ Docker Support
-
-## 🔒 Environment Variables
-
-### apps/web/.env
-
-```env
-DATABASE_URL=           # Supabase connection string
-NEXTAUTH_URL=           # App URL (http://localhost:3000)
-NEXTAUTH_SECRET=        # Generate with: openssl rand -base64 32
+# Install dependencies via Turbo
+npm install
 ```
 
-### packages/database/.env
+### 3. Environment Configuration
+
+Create `.env` files for both the web app and database package.
+
+**`apps/web/.env`**
 
 ```env
-DATABASE_URL=           # Supabase pooled connection
-DIRECT_URL=             # Supabase direct connection
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/nike_db"
+
+# Auth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-super-secret-key"
+
+# Stripe
+STRIPE_SECRET_KEY="sk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
 ```
+
+### 4. Database Setup
+
+```bash
+# Generate Prisma Client
+npm run db:generate
+
+# Push Schema to Database
+npm run db:push
+
+# Seed Database with Demo Data
+npm run db:seed
+```
+
+### 5. Launch
+
+```bash
+npm run dev
+```
+
+Visit `http://localhost:3000` to see the storefront.
+Visit `http://localhost:3000/admin` to access the dashboard.
+
+## 📦 Script Reference
+
+| Command             | Action                                             |
+| :------------------ | :------------------------------------------------- |
+| `npm run dev`       | Starts the entire monorepo in development mode.    |
+| `npm run build`     | Builds apps and packages for production.           |
+| `npm run lint`      | Runs ESLint across all workspaces.                 |
+| `npm run db:studio` | Opens Prisma Studio to visualize database records. |
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
 ## 📄 License
 
-MIT
+Distributed under the MIT License. See `LICENSE` for more information.
